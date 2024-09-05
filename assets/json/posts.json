@@ -3,7 +3,7 @@
         "id": "1",
         "title": "The Future of Technology",
         "date": "2024-09-01",
-        "image": "images/post1.jpg",
+        "image": "images/pic01.jpg",
         "content": "<p>Full content of the blog post here...</p>",
         "snippet": "Explore the emerging trends and technologies shaping our future in this detailed blog post."
     },
@@ -11,7 +11,7 @@
         "id": "2",
         "title": "How to Manage Your Time Effectively",
         "date": "2024-09-05",
-        "image": "images/post2.jpg",
+        "image": "images/pic01.jpg",
         "content": "<p>Full content of the blog post here...</p>",
         "snippet": "Learn practical tips and strategies for effective time management to enhance productivity."
     }
