@@ -43,12 +43,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         <p>Published on ${new Date(post.date).toLocaleDateString()}</p>
                         <span class="image main"><img src="${post.image}" alt="${post.title}" /></span>
                         <div>${post.content}</div>
-                        <button id="back">Back to list</button>
+                        <button id="back-to-blog-list">Back to list</button>
                     `;
                     blogDetail.style.display = 'block';
                     
                     // Back button functionality
-                    document.getElementById('back').addEventListener('click', function() {
+                    document.getElementById('back-to-blog-list').addEventListener('click', function() {
                         blogDetail.style.display = 'none';
                         blogHeader.style.display = 'block';
                         blogImage.style.display = 'block';
