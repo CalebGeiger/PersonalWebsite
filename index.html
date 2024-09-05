@@ -82,26 +82,41 @@
 						<!-- Contact -->
 							<article id="contact">
 								<h2 class="major">Contact</h2>
-								<form method="post" action="https://formspree.io/f/xanwkbyy">
+								<form action="https://api.web3forms.com/submit" method="post">
+									<input type="hidden" name="access_key" value="41b884d1-8361-422c-99f2-0bbbdd79e790">
 									<div class="fields">
 										<div class="field half">
 											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
+											<input type="text" name="name" id="name" required/>
 										</div>
 										<div class="field half">
 											<label for="email">Email</label>
-											<input type="email" name="email" id="email" />
+											<input type="email" name="email" id="email" required/>
 										</div>
 										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="4"></textarea>
+											<label for="message">Messages</label>
+											<textarea name="message" id="message" rows="4" required></textarea>
 										</div>
+										<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 									</div>
 									<ul class="actions">
 										<li><input type="submit" value="Send Message" class="primary" /></li>
 										<li><input type="reset" value="Reset" /></li>
 									</ul>
 								</form>
+
+								<script>
+									document.querySelector('form').addEventListener('submit', function(event) {
+										// Check if the form is valid
+										if (!event.target.checkValidity()) {
+											// Prevent the form from submitting
+											event.preventDefault();
+											// Show an alert or handle the invalid form in another way
+											alert('Please fill out all required fields correctly.');
+										}
+									});
+								</script>
+
 								<ul class="icons">
 									<li><a href="https://www.linkedin.com/in/calebgeiger/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
 									<!-- <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>  -->
