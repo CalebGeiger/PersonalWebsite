@@ -312,7 +312,7 @@ h6.major {
 }
 
 h1 {
-	font-size: 2.25rem;
+	font-size: 2.5rem;
 	line-height: 1.3;
 	letter-spacing: 0.5rem;
 }
@@ -1430,7 +1430,7 @@ body.is-preload #bg:before {
 #header .content p {
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 	line-height: 2;
 }
 
@@ -1463,7 +1463,7 @@ body.is-preload #bg:before {
 	padding: 0 1.25rem 0 1.45rem;
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 	border-bottom: 0;
 }
 
@@ -1757,4 +1757,10 @@ body.is-article-visible #footer {
 
 body.is-preload #footer {
 	opacity: 0;
+}
+
+#blog {
+    width: 80%; /* Adjust this value to control how much space it takes */
+    margin: 0 auto; /* Center the article */
+    max-width: 100%; /* Prevent it from overflowing */
 }
