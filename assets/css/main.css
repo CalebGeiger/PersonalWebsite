@@ -1760,7 +1760,6 @@ body.is-preload #footer {
 }
 
 #blog {
-    width: 80%; /* Adjust this value to control how much space it takes */
-    margin: 0 auto; /* Center the article */
-    max-width: 100%; /* Prevent it from overflowing */
+    width: 80rem; /* Adjust this value to control how much space it takes */
 }
+
