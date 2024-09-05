@@ -4,7 +4,7 @@
         "title": "Project One",
         "snippet": "A brief description of Project One.",
         "date": "2024-01-01",
-        "image": "images/project1.jpg",
+        "image": "images/pic02.jpg",
         "content": "<p>Detailed description of Project One.</p>"
     },
     {
@@ -12,7 +12,7 @@
         "title": "Project Two",
         "snippet": "A brief description of Project Two.",
         "date": "2024-02-01",
-        "image": "images/project2.jpg",
+        "image": "images/pic02.jpg",
         "content": "<p>Detailed description of Project Two.</p>"
     }
 ]

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const projectsDetail = document.getElementById('projects-detail');
             const projectsHeader = document.getElementById('projects-header');
             const projectsImage = document.getElementById('projects-image');
-            
+
             projects.forEach(project => {
                 // Create a link for each project
                 const link = document.createElement('a');
@@ -32,10 +32,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 const project = projects.find(p => p.id === projectId);
                 
                 if (project) {
-                    // Hide the original project header and image
-                    projectsHeader.classList.add('hidden');
-                    projectsImage.classList.add('hidden');
-                    projectsList.classList.add('hidden');
+                    // Use inline styles as in the working blog code
+                    projectsHeader.style.display = 'none';
+                    projectsImage.style.display = 'none';
+                    projectsList.style.display = 'none';
                     
                     // Show project detail
                     projectsDetail.innerHTML = `
@@ -45,14 +45,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         <div>${project.content}</div>
                         <button id="back">Back to list</button>
                     `;
-                    projectsDetail.classList.add('show');
+                    projectsDetail.style.display = 'block';
                     
                     // Back button functionality
                     document.getElementById('back').addEventListener('click', function() {
-                        projectsDetail.classList.remove('show');
-                        projectsHeader.classList.remove('hidden');
-                        projectsImage.classList.remove('hidden');
-                        projectsList.classList.remove('hidden');
+                        projectsDetail.style.display = 'none';
+                        projectsHeader.style.display = 'block';
+                        projectsImage.style.display = 'block';
+                        projectsList.style.display = 'block';
                     });
                 }
             }
