@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Show project detail
                     projectsDetail.innerHTML = `
                         <h2 class="major">${project.title}</h2>
-                        <p>Published on ${new Date(project.date).toLocaleDateString()}</p>
                         <span class="image main"><img src="${project.image}" alt="${project.title}" /></span>
+                        <p>Published on ${new Date(project.date).toLocaleDateString()}</p>
                         <div>${project.content}</div>
                         <button id="back-to-project-list">Back to list</button>
                     `;

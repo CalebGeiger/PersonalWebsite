@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Show blog post detail
                     blogDetail.innerHTML = `
                         <h2 class="major">${post.title}</h2>
-                        <p>Published on ${new Date(post.date).toLocaleDateString()}</p>
                         <span class="image main"><img src="${post.image}" alt="${post.title}" /></span>
+                        <p>Published on ${new Date(post.date).toLocaleDateString()}</p>
                         <div>${post.content}</div>
                         <button id="back-to-blog-list">Back to list</button>
                     `;
