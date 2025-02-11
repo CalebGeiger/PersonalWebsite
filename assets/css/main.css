@@ -1759,3 +1759,51 @@ body.is-preload #footer {
 	opacity: 0;
 }
 
+/* Container to establish positioning context */
+.blog-container {
+    position: relative;
+    width: 100%;
+    min-height: 400px; /* Adjust based on your content */
+}
+
+/* Wrapper for the main view elements */
+.blog-main-view {
+    position: relative;
+    width: 100%;
+    transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
+}
+
+/* Individual elements transitions */
+#blog-header,
+#blog-image,
+#blog-list {
+    transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
+}
+
+/* When main view is transitioning out */
+.blog-main-view.is-transitioning {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+    pointer-events: none;
+}
+
+/* Detail view styling */
+#blog-detail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(0.25rem);
+    pointer-events: none;
+    transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
+    visibility: hidden; /* Instead of display: none */
+}
+
+/* When detail view is visible */
+#blog-detail.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+}

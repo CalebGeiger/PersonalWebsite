@@ -1,19 +1,21 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     fetch('assets/json/posts.json')
         .then(response => response.json())
         .then(posts => {
             const blogList = document.getElementById('blog-list');
             const blogDetail = document.getElementById('blog-detail');
-            const blogHeader = document.getElementById('blog-header');
-            const blogImage = document.getElementById('blog-image');
-            
+            const blogMainView = document.querySelector('.blog-main-view');
+            const delay = 325;
+
+            // Create blog post list
             posts.forEach(post => {
-                // Create a link for each blog post
+                const listItem = document.createElement('div');
+                
                 const link = document.createElement('a');
                 link.href = '#';
                 link.textContent = post.title;
                 link.dataset.postId = post.id;
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     showPostDetail(post.id);
                 });
@@ -22,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 snippet.textContent = post.snippet;
                 snippet.className = 'snippet';
 
-                const listItem = document.createElement('div');
                 listItem.appendChild(link);
                 listItem.appendChild(snippet);
                 blogList.appendChild(listItem);
@@ -30,32 +31,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
             function showPostDetail(postId) {
                 const post = posts.find(p => p.id === postId);
-                
                 if (post) {
-                    // Hide the original blog header and image
-                    blogHeader.style.display = 'none';
-                    blogImage.style.display = 'none';
-                    blogList.style.display = 'none';
-                    
-                    // Show blog post detail
+                    // Prepare the detail content
                     blogDetail.innerHTML = `
                         <h2 class="major">${post.title}</h2>
-                        <span class="image main"><img src="${post.image}" alt="${post.title}" /></span>
+                        <span class="image main">
+                            <img src="${post.image}" alt="${post.title}" />
+                        </span>
                         <p>Published on ${new Date(post.date).toLocaleDateString()}</p>
                         <div>${post.content}</div>
                         <button id="back-to-blog-list">Back to list</button>
                     `;
-                    blogDetail.style.display = 'block';
-                    
-                    // Back button functionality
-                    document.getElementById('back-to-blog-list').addEventListener('click', function() {
-                        blogDetail.style.display = 'none';
-                        blogHeader.style.display = 'block';
-                        blogImage.style.display = 'block';
-                        blogList.style.display = 'block';
+
+                    // Start transition
+                    blogMainView.classList.add('is-transitioning');
+
+                    // Use requestAnimationFrame for smooth transition
+                    requestAnimationFrame(() => {
+                        blogDetail.classList.add('is-visible');
                     });
+
+                    // Set up back button
+                    document.getElementById('back-to-blog-list')
+                        .addEventListener('click', hideBlogDetail);
                 }
             }
+
+            function hideBlogDetail() {
+                // Hide detail view
+                blogDetail.classList.remove('is-visible');
+
+                // After transition, show main view
+                setTimeout(() => {
+                    blogMainView.classList.remove('is-transitioning');
+                }, delay);
+            }
         })
-        .catch(error => console.error('Error loading the blog posts:', error));
+        .catch(error => {
+            console.error('Error loading the blog posts:', error);
+        });
 });
