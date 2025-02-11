@@ -1760,14 +1760,16 @@ body.is-preload #footer {
 }
 
 /* Container to establish positioning context */
-.blog-container {
+.blog-container,
+.projects-container {
     position: relative;
     width: 100%;
     min-height: 400px; /* Adjust based on your content */
 }
 
 /* Wrapper for the main view elements */
-.blog-main-view {
+.blog-main-view,
+.projects-main-view {
     position: relative;
     width: 100%;
     transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
@@ -1776,19 +1778,24 @@ body.is-preload #footer {
 /* Individual elements transitions */
 #blog-header,
 #blog-image,
-#blog-list {
+#blog-list,
+#projects-header,
+#projects-image,
+#projects-list {
     transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
 }
 
 /* When main view is transitioning out */
-.blog-main-view.is-transitioning {
+.blog-main-view.is-transitioning,
+.projects-main-view.is-transitioning {
     opacity: 0;
     transform: translateY(-0.25rem);
     pointer-events: none;
 }
 
 /* Detail view styling */
-#blog-detail {
+#blog-detail,
+#projects-detail {
     position: absolute;
     top: 0;
     left: 0;
@@ -1801,7 +1808,8 @@ body.is-preload #footer {
 }
 
 /* When detail view is visible */
-#blog-detail.is-visible {
+#blog-detail.is-visible,
+#projects-detail.is-visible {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;

@@ -4,12 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(projects => {
             const projectsList = document.getElementById('projects-list');
             const projectsDetail = document.getElementById('projects-detail');
-            const projectsHeader = document.getElementById('projects-header');
-            const projectsImage = document.getElementById('projects-image');
+            const projectsMainView = document.querySelector('.projects-main-view');
             const delay = 325; // Match the delay from the main script
 
             projects.forEach(project => {
-                // Create a link for each project
+                const listItem = document.createElement('a');
+
                 const link = document.createElement('a');
                 link.href = '#';
                 link.textContent = project.title;
@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 snippet.textContent = project.snippet;
                 snippet.className = 'snippet';
 
-                const listItem = document.createElement('div');
                 listItem.appendChild(link);
                 listItem.appendChild(snippet);
                 projectsList.appendChild(listItem);
@@ -33,32 +32,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 const project = projects.find(p => p.id === projectId);
 
                 if (project) {
-                    // Hide the list, header, and image with transitions
-                    projectsHeader.classList.add('is-transitioning');
-                    projectsImage.classList.add('is-transitioning');
-                    projectsList.classList.add('is-transitioning');
+                    // Show project detail
+                    projectsDetail.innerHTML = `
+                        <h2 class="major">${project.title}</h2                            
+                        <span class="image main">
+                            <img src="${project.image}" alt="${project.title}" />
+                        </span>
+                        <p>Published on ${new Date(project.date).toLocaleDateString()}</p>
+                        <div>${project.content}</div>
+                        <button id="back-to-project-list">Back to list</button>
+                    `;
 
-                    setTimeout(() => {
-                        projectsHeader.style.display = 'none';
-                        projectsImage.style.display = 'none';
-                        projectsList.style.display = 'none';
+                    projectsMainView.classList.add('is-transitioning');
 
-                        // Show project detail
-                        projectsDetail.innerHTML = `
-                            <h2 class="major">${project.title}</h2>
-                            <span class="image main"><img src="${project.image}" alt="${project.title}" /></span>
-                            <p>Published on ${new Date(project.date).toLocaleDateString()}</p>
-                            <div>${project.content}</div>
-                            <button id="back-to-project-list">Back to list</button>
-                        `;
-                        projectsDetail.style.display = 'block';
+                    requestAnimationFrame(() => {
                         projectsDetail.classList.add('is-visible');
+                    });
 
-                        // Back button functionality
-                        document.getElementById('back-to-project-list').addEventListener('click', function () {
-                            hideProjectDetail();
-                        });
-                    }, delay);
+                    // Back button functionality
+                    document.getElementById('back-to-project-list')
+                        .addEventListener('click', hideProjectDetail);
                 }
             }
 
@@ -67,16 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 projectsDetail.classList.remove('is-visible');
 
                 setTimeout(() => {
-                    projectsDetail.style.display = 'none';
-
-                    // Show the list, header, and image
-                    projectsHeader.style.display = 'block';
-                    projectsImage.style.display = 'block';
-                    projectsList.style.display = 'block';
-
-                    projectsHeader.classList.remove('is-transitioning');
-                    projectsImage.classList.remove('is-transitioning');
-                    projectsList.classList.remove('is-transitioning');
+                    projectsMainView.classList.remove('is-transitioning')
                 }, delay);
             }
         })
