@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (project) {
                     // Show project detail
                     projectsDetail.innerHTML = `
-                        <h2 class="major">${project.title}</h2                            
+                        <h2 class="major">${project.title}</h2>                            
                         <span class="image main">
                             <img src="${project.image}" alt="${project.title}" />
                         </span>
