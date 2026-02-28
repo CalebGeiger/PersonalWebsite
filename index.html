@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dev/Solutions Engineer — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
   <style>
     /* ── Reset & Variables ─────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0a0e0a;
-      --bg2:       #0f1410;
-      --bg3:       #131a13;
-      --green:     #39ff5a;
-      --green-dim: #1e8c35;
-      --green-glow:#39ff5a55;
-      --amber:     #ffb347;
-      --cyan:      #4af0e4;
-      --red:       #ff5f5f;
-      --text:      #c8d8c8;
-      --text-dim:  #607060;
-      --border:    #1e321e;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-alt:  'Space Mono', monospace;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #0a0e0a;
+      --bg2: #0f1410;
+      --bg3: #131a13;
+      --green: #39ff5a;
+      --green-dim: #1e8c35;
+      --green-glow: #39ff5a55;
+      --amber: #ffb347;
+      --cyan: #4af0e4;
+      --red: #ff5f5f;
+      --text: #c8d8c8;
+      --text-dim: #607060;
+      --border: #1e321e;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-alt: 'Space Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);
@@ -42,13 +53,11 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
+      background: repeating-linear-gradient(to bottom,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 4px);
       pointer-events: none;
       z-index: 9999;
     }
@@ -65,24 +74,38 @@
     }
 
     /* ── Scrollbar ─────────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--green-dim); border-radius: 3px; }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--green-dim);
+      border-radius: 3px;
+    }
 
     /* ── Selection ─────────────────────────────────────────── */
-    ::selection { background: var(--green); color: var(--bg); }
+    ::selection {
+      background: var(--green);
+      color: var(--bg);
+    }
 
     /* ── Nav ───────────────────────────────────────────────── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 2.5rem;
       height: 52px;
-      background: rgba(10,14,10,0.92);
+      background: rgba(10, 14, 10, 0.92);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(8px);
     }
@@ -94,9 +117,15 @@
       letter-spacing: 0.05em;
     }
 
-    .nav-logo span { color: var(--text-dim); }
+    .nav-logo span {
+      color: var(--text-dim);
+    }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
 
     .nav-links a {
       color: var(--text-dim);
@@ -114,8 +143,13 @@
       transition: opacity 0.2s;
     }
 
-    .nav-links a:hover { color: var(--green); }
-    .nav-links a:hover::before { opacity: 1; }
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .nav-links a:hover::before {
+      opacity: 1;
+    }
 
     /* ── Section base ──────────────────────────────────────── */
     section {
@@ -177,7 +211,9 @@
       animation: fadeUp 0.6s ease 0.1s both;
     }
 
-    .hero-name .accent { color: var(--green); }
+    .hero-name .accent {
+      color: var(--green);
+    }
 
     .hero-title {
       font-size: clamp(1rem, 2.5vw, 1.3rem);
@@ -186,7 +222,10 @@
       animation: fadeUp 0.6s ease 0.2s both;
     }
 
-    .hero-title .sep { color: var(--text-dim); margin: 0 0.5rem; }
+    .hero-title .sep {
+      color: var(--text-dim);
+      margin: 0 0.5rem;
+    }
 
     .hero-desc {
       max-width: 560px;
@@ -196,7 +235,10 @@
       animation: fadeUp 0.6s ease 0.3s both;
     }
 
-    .hero-desc .comment { color: var(--text-dim); font-style: italic; }
+    .hero-desc .comment {
+      color: var(--text-dim);
+      font-style: italic;
+    }
 
     .hero-cta {
       display: flex;
@@ -230,7 +272,9 @@
       transition: opacity 0.2s;
     }
 
-    .btn:hover::before { opacity: 0.08; }
+    .btn:hover::before {
+      opacity: 0.08;
+    }
 
     .btn-primary {
       border-color: var(--green);
@@ -249,7 +293,10 @@
       color: var(--text-dim);
     }
 
-    .btn-secondary:hover { border-color: var(--text-dim); color: var(--text); }
+    .btn-secondary:hover {
+      border-color: var(--text-dim);
+      color: var(--text);
+    }
 
     /* Blinking cursor */
     .cursor {
@@ -280,8 +327,9 @@
       position: absolute;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(57,255,90,0.06) 0%, transparent 70%);
-      top: 50%; right: -100px;
+      background: radial-gradient(circle, rgba(57, 255, 90, 0.06) 0%, transparent 70%);
+      top: 50%;
+      right: -100px;
       transform: translateY(-50%);
       pointer-events: none;
     }
@@ -298,9 +346,15 @@
       animation: fadeIn 1s ease 0.8s both;
     }
 
-    .status-item { display: flex; align-items: center; gap: 0.4rem; }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
     .status-dot {
-      width: 7px; height: 7px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--green);
       box-shadow: 0 0 6px var(--green);
@@ -324,10 +378,23 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot-red   { background: #ff5f57; }
-    .dot-amber { background: #febc2e; }
-    .dot-green { background: #28c840; }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background: #ff5f57;
+    }
+
+    .dot-amber {
+      background: #febc2e;
+    }
+
+    .dot-green {
+      background: #28c840;
+    }
 
     .terminal-filename {
       margin-left: auto;
@@ -335,7 +402,10 @@
       color: var(--text-dim);
     }
 
-    .terminal-body { padding: 1.5rem; line-height: 1.9; }
+    .terminal-body {
+      padding: 1.5rem;
+      line-height: 1.9;
+    }
 
     .line-num {
       display: inline-block;
@@ -345,12 +415,30 @@
       font-size: 12px;
     }
 
-    .kw   { color: var(--cyan); }
-    .str  { color: var(--amber); }
-    .fn   { color: #82aaff; }
-    .cm   { color: var(--text-dim); font-style: italic; }
-    .val  { color: var(--green); }
-    .prop { color: #f0c0f0; }
+    .kw {
+      color: var(--cyan);
+    }
+
+    .str {
+      color: var(--amber);
+    }
+
+    .fn {
+      color: #82aaff;
+    }
+
+    .cm {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .val {
+      color: var(--green);
+    }
+
+    .prop {
+      color: #f0c0f0;
+    }
 
     /* ── Skills ────────────────────────────────────────────── */
     .skills-grid {
@@ -369,7 +457,7 @@
 
     .skill-category:hover {
       border-color: var(--green-dim);
-      box-shadow: 0 0 20px rgba(57,255,90,0.05);
+      box-shadow: 0 0 20px rgba(57, 255, 90, 0.05);
     }
 
     .skill-cat-title {
@@ -383,9 +471,16 @@
       gap: 0.5rem;
     }
 
-    .skill-cat-title::before { content: '>'; color: var(--green-dim); }
+    .skill-cat-title::before {
+      content: '>';
+      color: var(--green-dim);
+    }
 
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
 
     .tag {
       font-size: 11px;
@@ -396,15 +491,23 @@
       cursor: default;
     }
 
-    .tag:hover { border-color: var(--cyan); color: var(--cyan); }
+    .tag:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
 
     /* ── Experience ────────────────────────────────────────── */
-    .timeline { position: relative; padding-left: 1.5rem; }
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
 
     .timeline::before {
       content: '';
       position: absolute;
-      left: 0; top: 0.5rem; bottom: 0;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0;
       width: 1px;
       background: linear-gradient(to bottom, var(--green-dim), transparent);
     }
@@ -420,7 +523,8 @@
       position: absolute;
       left: -1.5rem;
       top: 0.55rem;
-      width: 7px; height: 7px;
+      width: 7px;
+      height: 7px;
       border: 1px solid var(--green);
       background: var(--bg);
       transform: rotate(45deg);
@@ -441,9 +545,16 @@
       margin-bottom: 0.2rem;
     }
 
-    .exp-company { color: var(--amber); font-size: 13px; margin-bottom: 0.8rem; }
+    .exp-company {
+      color: var(--amber);
+      font-size: 13px;
+      margin-bottom: 0.8rem;
+    }
 
-    .exp-desc { color: var(--text); line-height: 1.8; }
+    .exp-desc {
+      color: var(--text);
+      line-height: 1.8;
+    }
 
     .exp-desc li {
       list-style: none;
@@ -452,7 +563,12 @@
       margin-bottom: 0.3rem;
     }
 
-    .exp-desc li::before { content: '▸'; position: absolute; left: 0; color: var(--green-dim); }
+    .exp-desc li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--green-dim);
+    }
 
     /* ── Projects ──────────────────────────────────────────── */
     .projects-grid {
@@ -476,7 +592,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(57,255,90,0.03), transparent);
+      background: linear-gradient(135deg, rgba(57, 255, 90, 0.03), transparent);
       opacity: 0;
       transition: opacity 0.2s;
     }
@@ -484,10 +600,12 @@
     .project-card:hover {
       border-color: var(--green-dim);
       transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 20px rgba(57,255,90,0.05);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(57, 255, 90, 0.05);
     }
 
-    .project-card:hover::after { opacity: 1; }
+    .project-card:hover::after {
+      opacity: 1;
+    }
 
     .project-num {
       font-size: 11px;
@@ -504,15 +622,24 @@
       margin-bottom: 0.6rem;
     }
 
-    .project-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem; }
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
 
-    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
 
     .stack-tag {
       font-size: 10px;
       padding: 0.15rem 0.5rem;
-      background: rgba(57,255,90,0.07);
-      border: 1px solid rgba(57,255,90,0.2);
+      background: rgba(57, 255, 90, 0.07);
+      border: 1px solid rgba(57, 255, 90, 0.2);
       color: var(--green);
       letter-spacing: 0.05em;
     }
@@ -533,8 +660,14 @@
       transition: color 0.15s;
     }
 
-    .project-links a:hover { color: var(--green); }
-    .project-links a::before { content: '→ '; color: var(--green-dim); }
+    .project-links a:hover {
+      color: var(--green);
+    }
+
+    .project-links a::before {
+      content: '→ ';
+      color: var(--green-dim);
+    }
 
     /* ── Contact ───────────────────────────────────────────── */
     .contact-wrapper {
@@ -544,10 +677,21 @@
       align-items: start;
     }
 
-    .contact-intro { font-size: 15px; color: var(--text); line-height: 1.9; }
-    .contact-intro p { margin-bottom: 1rem; }
+    .contact-intro {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.9;
+    }
 
-    .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-intro p {
+      margin-bottom: 1rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
 
     .contact-link {
       display: flex;
@@ -573,8 +717,14 @@
       text-align: center;
     }
 
-    .contact-link-label { flex: 1; }
-    .contact-link-arrow { color: var(--green-dim); font-size: 11px; }
+    .contact-link-label {
+      flex: 1;
+    }
+
+    .contact-link-arrow {
+      color: var(--green-dim);
+      font-size: 11px;
+    }
 
     /* ── Footer ────────────────────────────────────────────── */
     footer {
@@ -588,13 +738,58 @@
       margin: 0 auto;
     }
 
-    footer span { color: var(--green); }
+    footer span {
+      color: var(--green);
+    }
 
     /* ── Animations ────────────────────────────────────────── */
-    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeUp  { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes blink   { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    @keyframes pulse   { 0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--green); } 50% { opacity: 0.5; box-shadow: 0 0 12px var(--green); } }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 6px var(--green);
+      }
+
+      50% {
+        opacity: 0.5;
+        box-shadow: 0 0 12px var(--green);
+      }
+    }
 
     /* Scroll reveal */
     .reveal {
@@ -603,19 +798,42 @@
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 640px) {
-      nav { padding: 0 1rem; }
-      .nav-links { gap: 1rem; }
-      section { padding: 5rem 1.2rem 3rem; }
-      .contact-wrapper { grid-template-columns: 1fr; gap: 2rem; }
-      .hero-glow { display: none; }
-      .status-bar { flex-wrap: wrap; gap: 0.8rem; }
+      nav {
+        padding: 0 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      section {
+        padding: 5rem 1.2rem 3rem;
+      }
+
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .hero-glow {
+        display: none;
+      }
+
+      .status-bar {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- ── Navigation ── -->
@@ -637,7 +855,7 @@
     <p class="hero-prompt">visitor@portfolio:~$ whoami</p>
 
     <h1 class="hero-name">
-      Your<br><span class="accent">Caleb Geiger</span><span class="cursor"></span>
+      Caleb<br><span class="accent">Geiger</span><span class="cursor"></span>
     </h1>
 
     <p class="hero-title">
@@ -652,7 +870,7 @@
 
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">▸ view my work</a>
-      <a href="#contact"  class="btn btn-secondary">get in touch</a>
+      <a href="#contact" class="btn btn-secondary">get in touch</a>
     </div>
 
     <div class="status-bar">
@@ -676,24 +894,34 @@
       </div>
       <div class="terminal-body">
         <div><span class="line-num">1</span><span class="kw">const</span> <span class="fn">developer</span> = {</div>
-        <div><span class="line-num">2</span>  <span class="prop">name</span>:       <span class="str">"Caleb Geiger"</span>,</div>
-        <div><span class="line-num">3</span>  <span class="prop">role</span>:       <span class="str">"Developer / Solutions Engineer"</span>,</div>
-        <div><span class="line-num">4</span>  <span class="prop">location</span>:  <span class="str">"Columbus, Ohio"</span>,</div>
-        <div><span class="line-num">5</span>  <span class="prop">experience</span>: <span class="val">5</span>, <span class="cm">// years</span></div>
-        <div><span class="line-num">6</span>  <span class="prop">focus</span>: [</div>
-        <div><span class="line-num">7</span>    <span class="str">"Full-Stack Development"</span>,</div>
-        <div><span class="line-num">8</span>    <span class="str">"Solutions Architecture"</span>,</div>
-        <div><span class="line-num">9</span>    <span class="str">"Technical Consulting"</span>,</div>
-        <div><span class="line-num">10</span>   <span class="str">"API Design & Integration"</span>,</div>
+        <div><span class="line-num">2</span> <span class="prop">name</span>: <span class="str">"Caleb Geiger"</span>,
+        </div>
+        <div><span class="line-num">3</span> <span class="prop">role</span>: <span class="str">"Developer / Solutions
+            Engineer"</span>,</div>
+        <div><span class="line-num">4</span> <span class="prop">location</span>: <span class="str">"Columbus,
+            Ohio"</span>,</div>
+        <div><span class="line-num">5</span> <span class="prop">experience</span>: <span class="val">5</span>, <span
+            class="cm">// years</span></div>
+        <div><span class="line-num">6</span> <span class="prop">focus</span>: [</div>
+        <div><span class="line-num">7</span> <span class="str">"Full-Stack Development"</span>,</div>
+        <div><span class="line-num">8</span> <span class="str">"Solutions Architecture"</span>,</div>
+        <div><span class="line-num">9</span> <span class="str">"Technical Consulting"</span>,</div>
+        <div><span class="line-num">10</span> <span class="str">"API Design & Integration"</span>,</div>
         <div><span class="line-num">11</span> ],</div>
         <div><span class="line-num">12</span> <span class="prop">bio</span>: <span class="str">`</span></div>
-        <div><span class="line-num">13</span>   <span class="str">I'm a developer and solutions engineer passionate about</span></div>
-        <div><span class="line-num">14</span>   <span class="str">building things that actually work at scale. I thrive at</span></div>
-        <div><span class="line-num">15</span>   <span class="str">the intersection of technical depth and business impact —</span></div>
-        <div><span class="line-num">16</span>   <span class="str">whether that's architecting a backend system, integrating</span></div>
-        <div><span class="line-num">17</span>   <span class="str">APIs, or guiding teams to better technical decisions.</span></div>
+        <div><span class="line-num">13</span> <span class="str">I'm a developer and solutions engineer passionate
+            about</span></div>
+        <div><span class="line-num">14</span> <span class="str">building things that actually work at scale. I thrive
+            at</span></div>
+        <div><span class="line-num">15</span> <span class="str">the intersection of technical depth and business impact
+            —</span></div>
+        <div><span class="line-num">16</span> <span class="str">whether that's architecting a backend system,
+            integrating</span></div>
+        <div><span class="line-num">17</span> <span class="str">APIs, or guiding teams to better technical
+            decisions.</span></div>
         <div><span class="line-num">18</span> <span class="str">`</span>,</div>
-        <div><span class="line-num">19</span> <span class="prop">currentlyLearning</span>: <span class="str">"[ Fill in what you're exploring ]"</span>,</div>
+        <div><span class="line-num">19</span> <span class="prop">currentlyLearning</span>: <span class="str">"[ Fill in
+            what you're exploring ]"</span>,</div>
         <div><span class="line-num">20</span>};</div>
       </div>
     </div>
@@ -787,7 +1015,8 @@
         <div class="exp-role">Senior Solutions Engineer</div>
         <div class="exp-company">Company Name · Full-time</div>
         <ul class="exp-desc">
-          <li>Led technical discovery with enterprise clients, translating business requirements into scalable architecture proposals.</li>
+          <li>Led technical discovery with enterprise clients, translating business requirements into scalable
+            architecture proposals.</li>
           <li>Built and delivered custom PoCs that accelerated deal cycles by 35%.</li>
           <li>Collaborated with product and engineering to feed customer insights into the roadmap.</li>
         </ul>
@@ -954,4 +1183,5 @@
   </script>
 
 </body>
+
 </html>
