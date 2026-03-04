@@ -808,14 +808,117 @@
       transform: translateY(0);
     }
 
+    /* ── Scroll Progress Bar ───────────────────────────────── */
+    .scroll-progress {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+      transition: width 0.1s linear;
+    }
+
+    /* ── Back to Top ───────────────────────────────────────── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 38px;
+      height: 38px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, border-color 0.2s, box-shadow 0.2s;
+      z-index: 90;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .back-to-top:hover {
+      border-color: var(--green-dim);
+      box-shadow: 0 0 12px var(--green-glow);
+    }
+
+    /* ── Hamburger Toggle ──────────────────────────────────── */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--green);
+      cursor: pointer;
+      padding: 0.3rem 0.55rem;
+      font-size: 18px;
+      line-height: 1;
+      font-family: var(--font-mono);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-toggle:hover {
+      border-color: var(--green-dim);
+      box-shadow: 0 0 8px var(--green-glow);
+    }
+
+    /* ── Active nav link ───────────────────────────────────── */
+    .nav-links a.active {
+      color: var(--green);
+    }
+
+    /* ── Focus styles ──────────────────────────────────────── */
+    :focus-visible {
+      outline: 1px solid var(--green);
+      outline-offset: 3px;
+    }
+
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 640px) {
       nav {
         padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 52px;
+      }
+
+      .nav-toggle {
+        display: block;
       }
 
       .nav-links {
-        gap: 1rem;
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(10, 14, 10, 0.97);
+        border-top: 1px solid var(--border);
+        padding: 0.5rem 0;
+        order: 3;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 0.7rem 1rem;
+        font-size: 13px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav.open .nav-links {
+        display: flex;
       }
 
       section {
@@ -842,8 +945,9 @@
 <body>
 
   <!-- ── Navigation ── -->
-  <nav>
+  <nav id="main-nav">
     <div class="nav-logo"><span>~/</span>caleb-geiger</div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <ul class="nav-links">
       <li><a href="#about">about</a></li>
       <li><a href="#skills">skills</a></li>
@@ -851,6 +955,7 @@
       <li><a href="#projects">projects</a></li>
       <li><a href="#contact">contact</a></li>
     </ul>
+    <div class="scroll-progress" id="scroll-progress"></div>
   </nav>
 
   <!-- ── Hero ── -->
@@ -1158,34 +1263,87 @@
     <p>Built with <span>&lt;/&gt;</span> by Caleb Geiger · <span>2026</span></p>
   </footer>
 
+  <!-- Back to top button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
   <script>
-    // Scroll reveal
+    /* ── Typewriter on hero prompt ─── */
+    const promptEl = document.querySelector('.hero-prompt');
+    const promptText = promptEl.textContent;
+    promptEl.textContent = '';
+    promptEl.style.opacity = '1';
+    promptEl.style.animation = 'none';
+
+    let charIndex = 0;
+    const typeInterval = setInterval(() => {
+      promptEl.textContent += promptText[charIndex++];
+      if (charIndex >= promptText.length) clearInterval(typeInterval);
+    }, 38);
+
+    /* ── Scroll reveal (section-relative stagger) ─── */
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.style.transitionDelay = (i * 0.08) + 's';
+          const section = entry.target.closest('section');
+          const sibs = section
+            ? Array.from(section.querySelectorAll('.reveal'))
+            : [];
+          const idx = sibs.indexOf(entry.target);
+          entry.target.style.transitionDelay = Math.max(0, idx * 0.1) + 's';
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.12 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Typewriter effect on hero name
-    const name = document.querySelector('.hero-name');
-    // Active nav highlight on scroll
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    /* ── Scroll events: progress bar + active nav + back-to-top ─── */
+    const sections   = document.querySelectorAll('section[id]');
+    const navLinks   = document.querySelectorAll('.nav-links a');
+    const progress   = document.getElementById('scroll-progress');
+    const backToTop  = document.getElementById('back-to-top');
 
     window.addEventListener('scroll', () => {
+      const scrollY   = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      /* Progress bar */
+      progress.style.width = (scrollY / docHeight * 100) + '%';
+
+      /* Back-to-top visibility */
+      backToTop.classList.toggle('visible', scrollY > 400);
+
+      /* Active nav highlight */
       let current = '';
       sections.forEach(section => {
-        const sectionTop = section.offsetTop - 80;
-        if (pageYOffset >= sectionTop) current = section.getAttribute('id');
+        if (scrollY >= section.offsetTop - 80) current = section.id;
       });
       navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === `#${current}`
-          ? 'var(--green)' : '';
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      });
+    }, { passive: true });
+
+    /* ── Back-to-top click ─── */
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ── Mobile hamburger ─── */
+    const nav    = document.getElementById('main-nav');
+    const toggle = document.querySelector('.nav-toggle');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+      toggle.textContent = isOpen ? '✕' : '☰';
+    });
+
+    /* Close menu when a nav link is clicked */
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', false);
+        toggle.textContent = '☰';
       });
     });
   </script>
