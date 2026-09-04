@@ -1,0 +1,16 @@
+# macOS / iCloud Drive
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+.icloud
+
+# Editors
+*.swp
+*~
+
+# Node (in case tooling is added later)
+node_modules/
