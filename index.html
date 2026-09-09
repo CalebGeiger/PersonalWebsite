@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--
+  visitor@portfolio:~$ view-source
+
+  hand-written html/css/js. one file. no build step, no framework,
+  no dependencies. the terminal in the hero is real — try `help`.
+
+  if you're hiring: calebgeiger@live.com
+-->
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Caleb Geiger — Developer &amp; Technical Solutions Architect</title>
   <meta name="description"
-    content="Caleb Geiger is a developer and technical solutions architect in Columbus, Ohio, building integrations, automation and custom business systems that turn messy requirements into software that ships." />
+    content="Caleb Geiger is a developer and technical solutions architect in Pittsburgh, Pennsylvania, building the integrations and automations that connect enterprise CRM, ERP and finance systems." />
   <meta name="author" content="Caleb Geiger" />
   <link rel="canonical" href="https://calebgeiger.com/" />
   <meta name="theme-color" content="#0a0e0a" />
@@ -18,7 +27,7 @@
   <meta property="og:site_name" content="Caleb Geiger" />
   <meta property="og:title" content="Caleb Geiger — Developer &amp; Technical Solutions Architect" />
   <meta property="og:description"
-    content="Developer and technical solutions architect in Columbus, Ohio. Integrations, automation and custom business systems." />
+    content="Integrations, automation and custom business systems. Pittsburgh, Pennsylvania." />
   <meta property="og:url" content="https://calebgeiger.com/" />
   <meta property="og:image" content="https://calebgeiger.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -29,7 +38,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Caleb Geiger — Developer &amp; Technical Solutions Architect" />
   <meta name="twitter:description"
-    content="Developer and technical solutions architect in Columbus, Ohio. Integrations, automation and custom business systems." />
+    content="Integrations, automation and custom business systems. Pittsburgh, Pennsylvania." />
   <meta name="twitter:image" content="https://calebgeiger.com/og-image.png" />
 
   <link rel="icon"
@@ -39,7 +48,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"
     rel="stylesheet" />
 
   <!-- Marks the document as JS-capable so progressive-reveal styles only apply when JS can undo them. -->
@@ -48,7 +57,7 @@
   </script>
 
   <style>
-    /* ── Reset & Variables ─────────────────────────────────── */
+    /* ── Reset ─────────────────────────────────────────────── */
     *,
     *::before,
     *::after {
@@ -57,27 +66,45 @@
       padding: 0;
     }
 
+    /* ── Design tokens ───────────────────────────────────────
+       Colour carries meaning here. Three accents, three jobs:
+
+         --ident  (amber)  who he is      — name, role, company
+         --live   (green)  what's alive   — links, focus, active, terminal
+         --data   (cyan)   machine facts  — dates, stack, metadata, diagrams
+
+       White/--text is reserved for structure and prose. Nothing should
+       take an accent unless it belongs to one of those three categories;
+       that rule is what keeps the page from turning monochrome-green.
+
+       Every value used for text clears WCAG AA (4.5:1) on its surface. */
     :root {
+      /* surfaces */
       --bg: #0a0e0a;
       --bg2: #0f1410;
-      --bg3: #131a13;
-      --green: #39ff5a;
-      /* --green-dim is used for small text; kept at >=4.5:1 on --bg */
-      --green-dim: #2ea84a;
-      /* --green-deep is decorative only (rules, gradients, glyphs) */
-      --green-deep: #1e8c35;
-      --green-glow: #39ff5a55;
-      --amber: #ffb347;
-      --cyan: #4af0e4;
-      --text: #c8d8c8;
-      /* --text-dim carries real copy, so it clears AA (~6.7:1) */
-      --text-dim: #8a9d8a;
-      /* Dimmest step (line-number gutter, separators) — still >=4.5:1 on --bg2 */
-      --text-faint: #788a78;
+      --bg3: #141b15;
       --border: #1e321e;
+      --border-lit: #2a4529;
+
+      /* text */
+      --text: #d2ded2;
+      --text-dim: #8fa28f;
+      --text-faint: #788a78;
+
+      /* accents */
+      --live: #39ff5a;
+      --live-dim: #2ea84a;
+      --live-glow: #39ff5a55;
+      --ident: #ffb347;
+      --data: #4af0e4;
+      --data-dim: #4fb8b0;
+
+      /* type */
+      --font-sans: 'IBM Plex Sans', system-ui, -apple-system, Segoe UI, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-      --font-alt: 'Space Mono', var(--font-mono);
+
       --nav-h: 52px;
+      --measure: 900px;
     }
 
     html {
@@ -88,28 +115,33 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 14px;
-      line-height: 1.7;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.65;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* CRT scanline overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(to bottom,
-          transparent 0px,
-          transparent 2px,
-          rgba(0, 0, 0, 0.08) 2px,
-          rgba(0, 0, 0, 0.08) 4px);
-      pointer-events: none;
-      z-index: 9999;
+    /* Mono is a texture, not the whole voice — it marks machine-facing
+       things (labels, code, tags, diagrams) against sans-serif prose. */
+    .mono,
+    nav,
+    .section-label,
+    .tag,
+    .stack-tag,
+    .exp-meta,
+    .project-num,
+    .terminal-body,
+    .term,
+    .btn,
+    .status-bar,
+    footer,
+    .projects-note,
+    svg text {
+      font-family: var(--font-mono);
     }
 
-    /* Noise texture overlay */
+    /* Noise texture — site-wide, subtle */
     body::after {
       content: '';
       position: fixed;
@@ -117,10 +149,10 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 9998;
-      opacity: 0.4;
+      opacity: 0.25;
     }
 
-    /* ── Scrollbar ─────────────────────────────────────────── */
+    /* ── Scrollbar / selection ─────────────────────────────── */
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -130,13 +162,12 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: var(--green-deep);
+      background: var(--live-dim);
       border-radius: 3px;
     }
 
-    /* ── Selection ─────────────────────────────────────────── */
     ::selection {
-      background: var(--green);
+      background: var(--live);
       color: var(--bg);
     }
 
@@ -148,10 +179,10 @@
       z-index: 10000;
       padding: 0.7rem 1.2rem;
       background: var(--bg2);
-      border: 1px solid var(--green);
-      color: var(--green);
+      border: 1px solid var(--live);
+      color: var(--live);
+      font-family: var(--font-mono);
       font-size: 12px;
-      letter-spacing: 0.08em;
       text-decoration: none;
     }
 
@@ -178,7 +209,7 @@
     }
 
     .nav-logo {
-      color: var(--green);
+      color: var(--text);
       font-weight: 700;
       font-size: 13px;
       letter-spacing: 0.05em;
@@ -186,7 +217,11 @@
     }
 
     .nav-logo span {
-      color: var(--text-dim);
+      color: var(--live-dim);
+    }
+
+    .nav-logo:hover {
+      color: var(--live);
     }
 
     .nav-links {
@@ -201,19 +236,19 @@
       font-size: 12px;
       letter-spacing: 0.08em;
       transition: color 0.2s;
-      position: relative;
     }
 
     .nav-links a::before {
       content: '// ';
-      color: var(--green-deep);
+      color: var(--live-dim);
       opacity: 0;
       transition: opacity 0.2s;
     }
 
     .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: var(--green);
+    .nav-links a:focus-visible,
+    .nav-links a[aria-current='true'] {
+      color: var(--live);
     }
 
     .nav-links a:hover::before,
@@ -222,25 +257,23 @@
       opacity: 1;
     }
 
-    .nav-links a[aria-current='true'] {
-      color: var(--green);
-    }
-
-    /* ── Section base ──────────────────────────────────────── */
+    /* ── Section rhythm ──────────────────────────────────────
+       Widths vary on purpose: narrow for prose, wide where the
+       content needs room. A single repeated column is what makes
+       a long page feel like a template. */
     section {
-      max-width: 900px;
+      max-width: var(--measure);
       margin: 0 auto;
       padding: 6rem 2rem 4rem;
-      /* Keeps anchored headings clear of the fixed nav */
       scroll-margin-top: var(--nav-h);
     }
 
     .section-label {
       font-size: 11px;
       letter-spacing: 0.2em;
-      color: var(--green-dim);
+      color: var(--data-dim);
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
@@ -254,123 +287,116 @@
     }
 
     h2 {
-      font-family: var(--font-alt);
-      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
       color: #fff;
       margin-bottom: 2.5rem;
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: -0.02em;
       text-wrap: balance;
+    }
+
+    h3 {
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
     /* ── Hero ──────────────────────────────────────────────── */
     #hero {
+      max-width: 1200px;
       min-height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding-top: calc(var(--nav-h) + 2rem);
-      padding-bottom: 8rem;
+      padding-bottom: 7rem;
       position: relative;
     }
 
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+      gap: 3.5rem;
+      align-items: center;
+      width: 100%;
+    }
+
     .hero-prompt {
-      color: var(--green-dim);
+      font-family: var(--font-mono);
+      color: var(--live-dim);
       font-size: 12px;
       margin-bottom: 1rem;
       min-height: 1.7em;
-      animation: fadeIn 0.5s ease forwards;
     }
 
     .hero-name {
-      font-family: var(--font-alt);
-      font-size: clamp(2.2rem, 6vw, 4.5rem);
-      font-weight: 700;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      font-weight: 600;
       color: #fff;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      animation: fadeUp 0.6s ease 0.1s both;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.6rem;
     }
 
+    /* Identity colour — the name is who, not what's clickable */
     .hero-name .accent {
-      color: var(--green);
+      color: var(--ident);
     }
 
     .hero-title {
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      color: var(--amber);
-      margin-bottom: 1.8rem;
-      animation: fadeUp 0.6s ease 0.2s both;
+      font-family: var(--font-mono);
+      font-size: clamp(0.85rem, 1.6vw, 1rem);
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      margin-bottom: 1.6rem;
     }
 
     .hero-title .sep {
       color: var(--text-faint);
-      margin: 0 0.5rem;
+      margin: 0 0.4rem;
     }
 
     .hero-desc {
-      max-width: 560px;
+      max-width: 46ch;
       color: var(--text);
-      line-height: 1.8;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.6s ease 0.3s both;
-    }
-
-    .hero-desc .comment {
-      color: var(--text-dim);
-      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2.2rem;
     }
 
     .hero-cta {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      animation: fadeUp 0.6s ease 0.4s both;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.65rem 1.4rem;
-      font-family: var(--font-mono);
+      padding: 0.7rem 1.4rem;
       font-size: 12px;
       letter-spacing: 0.08em;
       text-decoration: none;
       border: 1px solid;
       cursor: pointer;
       transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: currentColor;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .btn:hover::before {
-      opacity: 0.08;
     }
 
     .btn-primary {
-      border-color: var(--green);
-      color: var(--green);
+      border-color: var(--live);
+      color: var(--live);
       background: transparent;
     }
 
     .btn-primary:hover,
     .btn-primary:focus-visible {
-      box-shadow: 0 0 20px var(--green-glow);
+      box-shadow: 0 0 20px var(--live-glow);
       color: var(--bg);
-      background: var(--green);
+      background: var(--live);
     }
 
     .btn-secondary {
-      border-color: var(--border);
+      border-color: var(--border-lit);
       color: var(--text-dim);
     }
 
@@ -380,18 +406,22 @@
       color: var(--text);
     }
 
-    /* Blinking cursor */
+    /* A slim caret, not a block — at display size a full character-width
+       block reads as a graphic swallowing the last letter. */
     .cursor {
       display: inline-block;
-      width: 10px;
-      height: 1.1em;
-      background: var(--green);
-      margin-left: 3px;
-      vertical-align: middle;
-      animation: blink 1s step-end infinite;
+      width: 0.07em;
+      min-width: 3px;
+      height: 0.78em;
+      background: var(--live);
+      margin-left: 0.12em;
+      vertical-align: baseline;
+      animation: blink 1.1s step-end infinite;
     }
 
-    /* Grid lines bg */
+    /* Grid lines + CRT scanlines are confined to the hero, so they read
+       as a deliberate opening statement instead of a filter over the
+       whole document (and never sit on top of body copy). */
     #hero::before {
       content: '';
       position: absolute;
@@ -404,19 +434,29 @@
       pointer-events: none;
     }
 
-    /* Glow orb */
-    .hero-glow {
+    #hero::after {
+      content: '';
       position: absolute;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(57, 255, 90, 0.06) 0%, transparent 70%);
-      top: 50%;
-      right: -100px;
-      transform: translateY(-50%);
+      inset: 0;
+      background: repeating-linear-gradient(to bottom,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.09) 2px,
+          rgba(0, 0, 0, 0.09) 4px);
       pointer-events: none;
+      z-index: 3;
     }
 
-    /* Status bar */
+    .no-crt #hero::after {
+      display: none;
+    }
+
+    .hero-text,
+    .hero-term {
+      position: relative;
+      z-index: 2;
+    }
+
     .status-bar {
       position: absolute;
       bottom: 2rem;
@@ -426,7 +466,7 @@
       gap: 1.5rem;
       font-size: 11px;
       color: var(--text-dim);
-      animation: fadeIn 1s ease 0.8s both;
+      z-index: 2;
     }
 
     .status-item {
@@ -435,30 +475,29 @@
       gap: 0.4rem;
     }
 
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 6px var(--green);
-      animation: pulse 2s ease infinite;
-    }
-
-    /* ── About ─────────────────────────────────────────────── */
-    .terminal-box {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
+    /* ── Hero terminal ───────────────────────────────────────
+       A real command line, not a decoration. It is strictly additive:
+       everything it can print already exists in the page below, and it
+       reads that content out of the DOM rather than duplicating it. */
+    .term {
+      background: rgba(9, 13, 9, 0.86);
+      border: 1px solid var(--border-lit);
+      border-radius: 5px;
       overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 40px rgba(57, 255, 90, 0.04);
+      display: flex;
+      flex-direction: column;
+      height: 400px;
     }
 
-    .terminal-header {
+    .term-bar {
       background: var(--bg3);
-      padding: 0.6rem 1rem;
+      padding: 0.55rem 0.9rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       border-bottom: 1px solid var(--border);
+      flex: 0 0 auto;
     }
 
     .dot {
@@ -479,6 +518,116 @@
       background: #28c840;
     }
 
+    .term-title {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .term-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 0.9rem 1rem 1rem;
+      font-size: 12.5px;
+      line-height: 1.65;
+      cursor: text;
+    }
+
+    .term-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .term-out div {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .term-line {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .term-ps1 {
+      color: var(--live);
+      flex: 0 0 auto;
+    }
+
+    .term-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      background: none;
+      border: 0;
+      color: var(--text);
+      font: inherit;
+      padding: 0;
+      caret-color: var(--live);
+    }
+
+    /* A focus ring boxing the prompt line looks broken inside a terminal.
+       The window takes the ring instead — the indicator stays clearly
+       visible, which is what WCAG asks for, and it matches how real
+       terminal emulators show focus. */
+    .term-input:focus,
+    .term-input:focus-visible {
+      outline: none;
+    }
+
+    .term:focus-within {
+      border-color: var(--live-dim);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--live-dim),
+        0 0 34px rgba(57, 255, 90, 0.12);
+    }
+
+    .t-cmd {
+      color: var(--text);
+    }
+
+    .t-key {
+      color: var(--live);
+    }
+
+    .t-val {
+      color: var(--text-dim);
+    }
+
+    .t-id {
+      color: var(--ident);
+    }
+
+    .t-data {
+      color: var(--data-dim);
+    }
+
+    .t-err {
+      color: #ff8b8b;
+    }
+
+    .t-muted {
+      color: var(--text-faint);
+    }
+
+    .term-out a {
+      color: var(--live);
+    }
+
+    /* ── About ─────────────────────────────────────────────── */
+    .terminal-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      background: var(--bg3);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
     .terminal-filename {
       margin-left: auto;
       font-size: 11px;
@@ -488,11 +637,11 @@
     .terminal-body {
       padding: 1.5rem;
       line-height: 1.9;
-      /* Long string literals shouldn't force the page to scroll sideways */
+      font-size: 13px;
       overflow-x: auto;
     }
 
-    .terminal-body .code-line {
+    .code-line {
       display: flex;
       gap: 0.5rem;
     }
@@ -521,65 +670,85 @@
     }
 
     .kw {
-      color: var(--cyan);
+      color: var(--data);
     }
 
     .str {
-      color: var(--amber);
+      color: var(--ident);
     }
 
     .fn {
       color: #82aaff;
     }
 
-    .cm {
-      color: var(--text-dim);
-      font-style: italic;
-    }
-
     .val {
-      color: var(--green);
+      color: var(--live);
     }
 
     .prop {
       color: #f0c0f0;
     }
 
-    /* ── Skills ────────────────────────────────────────────── */
+    /* ── Skills — full-bleed band ────────────────────────────
+       One deliberate break in the page rhythm, so the eye gets a
+       chapter marker roughly halfway down. */
+    #skills {
+      max-width: none;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #skills>* {
+      max-width: 1100px;
+      margin-inline: auto;
+      padding-inline: 2rem;
+    }
+
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.2rem;
     }
 
+    /* Pinned to 3 across so six categories land as a clean 3x2 — auto-fit
+       gives 4+2 on wide screens, which leaves a ragged empty corner. */
+    @media (min-width: 900px) {
+      .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     .skill-category {
-      background: var(--bg2);
+      background: var(--bg);
       border: 1px solid var(--border);
       padding: 1.4rem;
-      position: relative;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s;
     }
 
     .skill-category:hover {
-      border-color: var(--green-deep);
-      box-shadow: 0 0 20px rgba(57, 255, 90, 0.05);
+      border-color: var(--border-lit);
     }
 
     .skill-cat-title {
+      font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.15em;
-      color: var(--green);
+      color: var(--text);
       text-transform: uppercase;
       margin-bottom: 1rem;
       display: flex;
       /* Keeps the '>' on the first line when a title wraps */
       align-items: flex-start;
       gap: 0.5rem;
+      font-weight: 700;
     }
 
     .skill-cat-title::before {
       content: '>';
-      color: var(--green-deep);
+      color: var(--live-dim);
     }
 
     .skill-tags {
@@ -598,8 +767,8 @@
     }
 
     .tag:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
+      border-color: var(--data-dim);
+      color: var(--data);
     }
 
     /* ── Experience ────────────────────────────────────────── */
@@ -616,7 +785,7 @@
       top: 0.5rem;
       bottom: 0;
       width: 1px;
-      background: linear-gradient(to bottom, var(--green-deep), transparent);
+      background: linear-gradient(to bottom, var(--border-lit), transparent);
     }
 
     .exp-item {
@@ -633,124 +802,113 @@
       content: '';
       position: absolute;
       left: -1.5rem;
-      top: 0.55rem;
+      top: 0.6rem;
       width: 7px;
       height: 7px;
-      border: 1px solid var(--green);
+      border: 1px solid var(--ident);
       background: var(--bg);
       transform: rotate(45deg);
     }
 
     .exp-meta {
       font-size: 11px;
-      color: var(--green-dim);
+      color: var(--data-dim);
       margin-bottom: 0.3rem;
       letter-spacing: 0.1em;
     }
 
     .exp-role {
-      font-family: var(--font-alt);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       color: #fff;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
 
     .exp-company {
-      color: var(--amber);
-      font-size: 13px;
+      font-family: var(--font-mono);
+      color: var(--ident);
+      font-size: 12.5px;
       margin-bottom: 0.8rem;
     }
 
     .exp-desc {
       color: var(--text);
-      line-height: 1.8;
       list-style: none;
+      max-width: 68ch;
     }
 
     .exp-desc li {
       padding-left: 1.2rem;
       position: relative;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.35rem;
     }
 
     .exp-desc li::before {
       content: '▸';
       position: absolute;
       left: 0;
-      color: var(--green-deep);
+      color: var(--text-faint);
     }
 
     .info-link {
-      color: var(--amber);
-      font-size: 13px;
+      color: var(--ident);
       text-underline-offset: 3px;
       text-decoration-color: rgba(255, 179, 71, 0.4);
     }
 
     .info-link:hover {
-      text-decoration-color: var(--amber);
+      text-decoration-color: var(--ident);
     }
 
-    /* ── Projects ──────────────────────────────────────────── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.2rem;
+    /* ── Projects — case-study rows with architecture diagrams ──
+       An architect's portfolio should contain architecture. Text on the
+       left, the actual system on the right; the diagram is the artifact
+       of the job, and it survives an NDA because it names shapes, not
+       clients. Rows (not cards) so each diagram gets real width. */
+    #projects {
+      max-width: 1100px;
+    }
+
+    .projects-list {
       list-style: none;
-    }
-
-    .project-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      position: relative;
-      overflow: hidden;
+      gap: 1.2rem;
     }
 
-    .project-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(57, 255, 90, 0.03), transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
+    .project-row {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 2.5rem;
+      align-items: center;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
 
-    .project-card:hover {
-      border-color: var(--green-deep);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(57, 255, 90, 0.05);
-    }
-
-    .project-card:hover::after {
-      opacity: 1;
+    .project-row:hover {
+      border-color: var(--border-lit);
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
     }
 
     .project-num {
       font-size: 11px;
-      color: var(--text-dim);
-      margin-bottom: 0.8rem;
-      font-family: var(--font-alt);
+      color: var(--data-dim);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.6rem;
     }
 
     .project-name {
-      font-family: var(--font-alt);
-      font-size: 1rem;
+      font-size: 1.15rem;
       color: #fff;
-      font-weight: 700;
       margin-bottom: 0.6rem;
     }
 
     .project-desc {
-      font-size: 13px;
+      font-size: 0.95rem;
       color: var(--text-dim);
       line-height: 1.7;
-      margin-bottom: 1rem;
+      margin-bottom: 1.1rem;
     }
 
     .project-stack {
@@ -758,32 +916,95 @@
       flex-wrap: wrap;
       gap: 0.4rem;
       list-style: none;
-      /* Pins the stack row to the bottom so cards of unequal text still align */
-      margin-top: auto;
     }
 
     .stack-tag {
       font-size: 10px;
       padding: 0.15rem 0.5rem;
-      background: rgba(57, 255, 90, 0.07);
-      border: 1px solid rgba(57, 255, 90, 0.2);
-      color: var(--green);
+      background: rgba(74, 240, 228, 0.06);
+      border: 1px solid rgba(74, 240, 228, 0.22);
+      color: var(--data);
       letter-spacing: 0.05em;
     }
 
+    /* The drawing is short relative to the text column beside it, so it
+       sits in a recessed panel — the surrounding space then reads as
+       deliberate matting rather than a gap. */
+    .project-diagram {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.4rem 1.2rem;
+    }
+
+    .project-diagram svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    /* Diagram parts */
+    .d-node {
+      fill: var(--bg3);
+      stroke: var(--border-lit);
+      stroke-width: 1;
+    }
+
+    .d-label {
+      fill: var(--text);
+      font-size: 11.5px;
+    }
+
+    .d-edge {
+      fill: var(--data-dim);
+      font-size: 9.5px;
+    }
+
+    .d-wire {
+      stroke: var(--border-lit);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .d-head {
+      fill: var(--text-faint);
+    }
+
+    /* Data visibly moves when you hover the row */
+    .d-flow {
+      stroke: var(--live);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-dasharray: 3 9;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .project-row:hover .d-flow {
+      opacity: 0.95;
+      animation: flow 0.75s linear infinite;
+    }
+
+    @keyframes flow {
+      to {
+        stroke-dashoffset: -12;
+      }
+    }
+
     .projects-note {
-      margin-top: 1.5rem;
+      margin-top: 1.6rem;
       font-size: 12px;
       color: var(--text-dim);
     }
 
     .projects-note a {
-      color: var(--green-dim);
+      color: var(--live-dim);
       text-underline-offset: 3px;
     }
 
     .projects-note a:hover {
-      color: var(--green);
+      color: var(--live);
     }
 
     /* ── Contact ───────────────────────────────────────────── */
@@ -795,9 +1016,8 @@
     }
 
     .contact-intro {
-      font-size: 15px;
       color: var(--text);
-      line-height: 1.9;
+      line-height: 1.8;
     }
 
     .contact-intro p {
@@ -820,25 +1040,26 @@
       text-decoration: none;
       color: var(--text-dim);
       transition: border-color 0.2s, color 0.2s;
-      font-size: 13px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
     }
 
     .contact-link:hover,
     .contact-link:focus-visible {
-      border-color: var(--green-deep);
-      color: var(--green);
+      border-color: var(--live-dim);
+      color: var(--live);
     }
 
     .contact-link-icon {
       display: flex;
       width: 18px;
       flex: 0 0 18px;
-      color: var(--green-deep);
+      color: var(--live-dim);
       transition: color 0.2s;
     }
 
     .contact-link:hover .contact-link-icon {
-      color: var(--green);
+      color: var(--live);
     }
 
     .contact-link-icon svg {
@@ -848,12 +1069,11 @@
 
     .contact-link-label {
       flex: 1;
-      /* Long addresses shouldn't blow out the grid column */
       overflow-wrap: anywhere;
     }
 
     .contact-link-arrow {
-      color: var(--green-deep);
+      color: var(--live-dim);
       font-size: 11px;
     }
 
@@ -864,38 +1084,16 @@
       text-align: center;
       font-size: 11px;
       color: var(--text-dim);
-      letter-spacing: 0.1em;
-      max-width: 900px;
+      letter-spacing: 0.08em;
+      max-width: var(--measure);
       margin: 0 auto;
     }
 
     footer span {
-      color: var(--green);
+      color: var(--live);
     }
 
     /* ── Animations ────────────────────────────────────────── */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @keyframes blink {
 
       0%,
@@ -905,20 +1103,6 @@
 
       50% {
         opacity: 0;
-      }
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        box-shadow: 0 0 6px var(--green);
-      }
-
-      50% {
-        opacity: 0.5;
-        box-shadow: 0 0 12px var(--green);
       }
     }
 
@@ -934,18 +1118,17 @@
       transform: translateY(0);
     }
 
-    /* ── Scroll Progress Bar ───────────────────────────────── */
+    /* ── Scroll progress / back to top ─────────────────────── */
     .scroll-progress {
       position: absolute;
       bottom: -1px;
       left: 0;
       height: 2px;
       width: 0%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green-glow);
+      background: var(--live);
+      box-shadow: 0 0 8px var(--live-glow);
     }
 
-    /* ── Back to Top ───────────────────────────────────────── */
     .back-to-top {
       position: fixed;
       bottom: 2rem;
@@ -954,7 +1137,7 @@
       height: 38px;
       background: var(--bg2);
       border: 1px solid var(--border);
-      color: var(--green);
+      color: var(--live);
       font-family: var(--font-mono);
       font-size: 16px;
       cursor: pointer;
@@ -973,16 +1156,16 @@
     }
 
     .back-to-top:hover {
-      border-color: var(--green-deep);
-      box-shadow: 0 0 12px var(--green-glow);
+      border-color: var(--live-dim);
+      box-shadow: 0 0 12px var(--live-glow);
     }
 
-    /* ── Hamburger Toggle ──────────────────────────────────── */
+    /* ── Hamburger ─────────────────────────────────────────── */
     .nav-toggle {
       display: none;
       background: none;
       border: 1px solid var(--border);
-      color: var(--green);
+      color: var(--live);
       cursor: pointer;
       padding: 0.3rem 0.55rem;
       font-size: 18px;
@@ -992,18 +1175,35 @@
     }
 
     .nav-toggle:hover {
-      border-color: var(--green-deep);
-      box-shadow: 0 0 8px var(--green-glow);
+      border-color: var(--live-dim);
+      box-shadow: 0 0 8px var(--live-glow);
     }
 
-    /* ── Focus styles ──────────────────────────────────────── */
     :focus-visible {
-      outline: 2px solid var(--green);
+      outline: 2px solid var(--live);
       outline-offset: 3px;
     }
 
     /* ── Responsive ────────────────────────────────────────── */
-    @media (max-width: 780px) {
+    @media (max-width: 1000px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      /* The terminal is an enhancement, and a typed CLI behind a soft
+         keyboard is worse than no CLI. Everything it prints is in the
+         page below, so narrow screens simply get the page. */
+      .hero-term {
+        display: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .project-row {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+      }
+
       .contact-wrapper {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -1052,12 +1252,12 @@
         padding: 5rem 1.2rem 3rem;
       }
 
-      #hero {
-        padding-bottom: 9rem;
+      #skills>* {
+        padding-inline: 1.2rem;
       }
 
-      .hero-glow {
-        display: none;
+      #hero {
+        padding-bottom: 8rem;
       }
 
       .status-bar {
@@ -1072,15 +1272,18 @@
         right: 1rem;
       }
 
+      .project-row {
+        padding: 1.3rem;
+      }
+
       .terminal-body {
         padding: 1.2rem 0.9rem;
-        font-size: 12.5px;
+        font-size: 12px;
       }
     }
 
     /* ── Reduced motion ────────────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
-
       html {
         scroll-behavior: auto;
       }
@@ -1098,26 +1301,21 @@
         opacity: 1;
         transform: none;
       }
-
-      .project-card:hover {
-        transform: none;
-      }
     }
 
     /* ── Print ───────────────────────────────────────────────
-       Collapses the site into a compact, ink-friendly one-pager.
-       Chrome/Safari drop backgrounds by default, so every colour is
-       forced to near-black rather than relying on the dark palette. */
+       Collapses to a compact, ink-friendly one-pager. Browsers drop
+       backgrounds by default, so every colour is forced near-black
+       rather than relying on the dark palette. Diagrams are kept —
+       they're the most useful thing on the page in print. */
     @media print {
       @page {
         margin: 14mm;
       }
 
-      /* Screen-only chrome and decoration */
-      body::before,
       body::after,
       #hero::before,
-      .hero-glow,
+      #hero::after,
       nav,
       .back-to-top,
       .skip-link,
@@ -1125,12 +1323,14 @@
       .hero-cta,
       .hero-prompt,
       .cursor,
+      .hero-term,
       .terminal-header,
       .contact-link-arrow,
       .contact-link-icon,
       .section-label::after,
       .timeline::before,
-      .exp-item::before {
+      .exp-item::before,
+      .d-flow {
         display: none !important;
       }
 
@@ -1155,10 +1355,15 @@
         min-height: 0 !important;
         padding: 0 0 10pt !important;
         break-inside: avoid;
+        border: 0 !important;
       }
 
       #hero {
         padding: 0 0 12pt !important;
+        display: block;
+      }
+
+      .hero-inner {
         display: block;
       }
 
@@ -1168,12 +1373,13 @@
       }
 
       .hero-title {
-        font-size: 11pt;
+        font-size: 10pt;
         margin-bottom: 6pt;
       }
 
       .hero-desc {
         max-width: none;
+        font-size: 10pt;
         margin-bottom: 0;
       }
 
@@ -1187,9 +1393,13 @@
         margin-bottom: 2pt;
       }
 
+      #skills>* {
+        padding-inline: 0;
+      }
+
       .terminal-box,
       .skill-category,
-      .project-card,
+      .project-row,
       .tag,
       .stack-tag {
         border: 1px solid #ccc !important;
@@ -1206,13 +1416,33 @@
       }
 
       .exp-item,
-      .project-card,
+      .project-row,
       .skill-category {
         break-inside: avoid;
       }
 
       .exp-item {
         margin-bottom: 12pt;
+      }
+
+      .project-row {
+        padding: 10pt;
+        gap: 12pt;
+      }
+
+      .d-node {
+        fill: #fff !important;
+        stroke: #999 !important;
+      }
+
+      .d-wire {
+        stroke: #999 !important;
+      }
+
+      .d-label,
+      .d-edge,
+      .d-head {
+        fill: #111 !important;
       }
 
       .contact-wrapper {
@@ -1246,8 +1476,8 @@
     "email": "mailto:calebgeiger@live.com",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Columbus",
-      "addressRegion": "OH",
+      "addressLocality": "Pittsburgh",
+      "addressRegion": "PA",
       "addressCountry": "US"
     },
     "sameAs": [
@@ -1280,33 +1510,54 @@
 
     <!-- ── Hero ── -->
     <section id="hero" aria-labelledby="hero-name">
-      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-inner">
 
-      <p class="hero-prompt" aria-hidden="true">visitor@portfolio:~$ whoami</p>
+        <div class="hero-text">
+          <p class="hero-prompt" aria-hidden="true">visitor@portfolio:~$ whoami</p>
 
-      <h1 class="hero-name" id="hero-name">
-        Caleb<br><span class="accent">Geiger</span><span class="cursor" aria-hidden="true"></span>
-      </h1>
+          <h1 class="hero-name" id="hero-name">
+            Caleb <span class="accent">Geiger</span><span class="cursor" aria-hidden="true"></span>
+          </h1>
 
-      <p class="hero-title">
-        Developer<span class="sep" aria-hidden="true">/</span>Technical Solutions Architect
-      </p>
+          <p class="hero-title">
+            Developer<span class="sep" aria-hidden="true">/</span>Technical Solutions Architect
+          </p>
 
-      <p class="hero-desc">
-        <span class="comment">// Building scalable systems &amp; bridging the gap between tech and business.</span><br>
-        I architect solutions, write clean code, and help organizations translate complex
-        technical challenges into elegant, working software.
-      </p>
+          <p class="hero-desc">
+            I build the integrations and automations that connect enterprise systems — CRM, ERP,
+            finance — and the tooling that makes their data trustworthy. Discovery through delivery.
+          </p>
 
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary"><span aria-hidden="true">▸</span> view my work</a>
-        <a href="#contact" class="btn btn-secondary">get in touch</a>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary"><span aria-hidden="true">▸</span> view my work</a>
+            <a href="#contact" class="btn btn-secondary">get in touch</a>
+          </div>
+        </div>
+
+        <!-- Real terminal. Reads its content from the page below. -->
+        <div class="hero-term">
+          <div class="term" id="term">
+            <div class="term-bar" aria-hidden="true">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-amber"></span>
+              <span class="dot dot-green"></span>
+              <span class="term-title">caleb@portfolio: ~</span>
+            </div>
+            <div class="term-body" id="term-body">
+              <div class="term-out" id="term-out"></div>
+              <form class="term-line" id="term-form" autocomplete="off">
+                <label class="term-ps1" for="term-input" aria-hidden="true">$</label>
+                <input class="term-input" id="term-input" type="text" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" spellcheck="false" aria-label="Terminal — type help for commands" />
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="status-bar">
-        <!-- <div class="status-item"><span class="status-dot"></span> available for work</div> -->
-        <div class="status-item"><span aria-hidden="true">📍</span> Columbus, Ohio</div>
-        <!-- <div class="status-item">⚡ open to remote</div> -->
+        <div class="status-item"><span aria-hidden="true">📍</span> Pittsburgh, Pennsylvania</div>
       </div>
     </section>
 
@@ -1326,13 +1577,13 @@
           <div class="code-line"><span class="line-num" aria-hidden="true">1</span><span class="code-txt"><span class="kw">const</span> <span class="fn">developer</span> = {</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">2</span><span class="code-txt i1"><span class="prop">name</span>: <span class="str">"Caleb Geiger"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">3</span><span class="code-txt i1"><span class="prop">role</span>: <span class="str">"Developer / Technical Solutions Architect"</span>,</span></div>
-          <div class="code-line"><span class="line-num" aria-hidden="true">4</span><span class="code-txt i1"><span class="prop">location</span>: <span class="str">"Columbus, Ohio"</span>,</span></div>
+          <div class="code-line"><span class="line-num" aria-hidden="true">4</span><span class="code-txt i1"><span class="prop">location</span>: <span class="str">"Pittsburgh, Pennsylvania"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">5</span><span class="code-txt i1"><span class="prop">buildingSince</span>: <span class="val">2020</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">6</span><span class="code-txt i1"><span class="prop">focus</span>: [</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">7</span><span class="code-txt i2"><span class="str">"Solutions Architecture"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">8</span><span class="code-txt i2"><span class="str">"API Design &amp; Integration"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">9</span><span class="code-txt i2"><span class="str">"Business Process Automation"</span>,</span></div>
-          <div class="code-line"><span class="line-num" aria-hidden="true">10</span><span class="code-txt i2"><span class="str">"Full-Stack Development"</span>,</span></div>
+        <div class="code-line"><span class="line-num" aria-hidden="true">10</span><span class="code-txt i2"><span class="str">"Full-Stack Development"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">11</span><span class="code-txt i1">],</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">12</span><span class="code-txt i1"><span class="prop">bio</span>: <span class="str">`</span></span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">13</span><span class="code-txt i2"><span class="str">I'm a developer and technical solutions architect who likes</span></span></div>
@@ -1348,7 +1599,7 @@
       </div>
     </section>
 
-    <!-- ── Skills ── -->
+    <!-- ── Skills (full-bleed band) ── -->
     <section id="skills" aria-labelledby="skills-h">
       <p class="section-label">01 — skills</p>
       <h2 id="skills-h">Tech Stack</h2>
@@ -1474,49 +1725,146 @@
       <p class="section-label">03 — projects</p>
       <h2 id="projects-h">Selected Work</h2>
 
-      <ul class="projects-grid">
-        <li class="project-card reveal">
-          <p class="project-num">work_01</p>
-          <h3 class="project-name">Order-to-Cash Automation</h3>
-          <p class="project-desc">
-            Power Automate flows and custom APIs that replaced manual handoffs across order processing, finance and
-            reporting — fewer re-keyed records, faster close.
-          </p>
-          <ul class="project-stack">
-            <li class="stack-tag">Power Automate</li>
-            <li class="stack-tag">REST APIs</li>
-            <li class="stack-tag">SQL Server</li>
-          </ul>
+      <ul class="projects-list">
+
+        <li class="project-row reveal" data-slug="order-to-cash">
+          <div class="project-info">
+            <p class="project-num">work_01</p>
+            <h3 class="project-name">Order-to-Cash Automation</h3>
+            <p class="project-desc">
+              Power Automate flows and custom APIs that replaced manual handoffs across order processing, finance
+              and reporting — fewer re-keyed records, faster close.
+            </p>
+            <ul class="project-stack">
+              <li class="stack-tag">Power Automate</li>
+              <li class="stack-tag">REST APIs</li>
+              <li class="stack-tag">SQL Server</li>
+            </ul>
+          </div>
+          <div class="project-diagram">
+            <svg viewBox="0 0 620 120" role="img"
+              aria-label="Flow: Dynamics 365 triggers Power Automate, which calls a custom REST API, which upserts into SQL Server, producing a nightly reconciliation report.">
+              <!-- nodes -->
+              <rect class="d-node" x="0" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="58" y="62" text-anchor="middle">Dynamics 365</text>
+              <rect class="d-node" x="168" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="226" y="62" text-anchor="middle">Power Automate</text>
+              <rect class="d-node" x="336" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="394" y="62" text-anchor="middle">Custom API</text>
+              <rect class="d-node" x="504" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="562" y="62" text-anchor="middle">SQL Server</text>
+              <!-- edges -->
+              <line class="d-wire" x1="120" y1="58" x2="160" y2="58" />
+              <line class="d-flow" x1="120" y1="58" x2="160" y2="58" />
+              <path class="d-head" d="M160,54 L166,58 L160,62 Z" />
+              <text class="d-edge" x="140" y="50" text-anchor="middle">trigger</text>
+              <line class="d-wire" x1="288" y1="58" x2="328" y2="58" />
+              <line class="d-flow" x1="288" y1="58" x2="328" y2="58" />
+              <path class="d-head" d="M328,54 L334,58 L328,62 Z" />
+              <text class="d-edge" x="308" y="50" text-anchor="middle">REST</text>
+              <line class="d-wire" x1="456" y1="58" x2="496" y2="58" />
+              <line class="d-flow" x1="456" y1="58" x2="496" y2="58" />
+              <path class="d-head" d="M496,54 L502,58 L496,62 Z" />
+              <text class="d-edge" x="476" y="50" text-anchor="middle">upsert</text>
+              <!-- output -->
+              <line class="d-wire" x1="562" y1="82" x2="562" y2="94" />
+              <path class="d-head" d="M558,94 L562,100 L566,94 Z" />
+              <text class="d-edge" x="562" y="114" text-anchor="middle">nightly recon</text>
+            </svg>
+          </div>
         </li>
 
-        <li class="project-card reveal">
-          <p class="project-num">work_02</p>
-          <h3 class="project-name">Custom CRM Components</h3>
-          <p class="project-desc">
-            PCF controls and web resources built for Dynamics 365 that put the data business users actually need in
-            front of them, inside the workflow they already use.
-          </p>
-          <ul class="project-stack">
-            <li class="stack-tag">TypeScript</li>
-            <li class="stack-tag">PCF</li>
-            <li class="stack-tag">Dynamics 365</li>
-            <li class="stack-tag">Dataverse</li>
-          </ul>
+        <li class="project-row reveal" data-slug="crm-components">
+          <div class="project-info">
+            <p class="project-num">work_02</p>
+            <h3 class="project-name">Custom CRM Components</h3>
+            <p class="project-desc">
+              PCF controls and web resources built for Dynamics 365 that put the data business users actually need
+              in front of them, inside the workflow they already use.
+            </p>
+            <ul class="project-stack">
+              <li class="stack-tag">TypeScript</li>
+              <li class="stack-tag">PCF</li>
+              <li class="stack-tag">Dynamics 365</li>
+              <li class="stack-tag">Dataverse</li>
+            </ul>
+          </div>
+          <div class="project-diagram">
+            <svg viewBox="0 0 620 120" role="img"
+              aria-label="Loop: Dataverse serves data over the Web API to a PCF control written in TypeScript, which renders inside a Dynamics 365 form; user edits save back to Dataverse.">
+              <rect class="d-node" x="0" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="58" y="62" text-anchor="middle">Dataverse</text>
+              <rect class="d-node" x="252" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="310" y="62" text-anchor="middle">PCF control</text>
+              <rect class="d-node" x="504" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="562" y="62" text-anchor="middle">D365 form</text>
+              <line class="d-wire" x1="120" y1="58" x2="244" y2="58" />
+              <line class="d-flow" x1="120" y1="58" x2="244" y2="58" />
+              <path class="d-head" d="M244,54 L250,58 L244,62 Z" />
+              <text class="d-edge" x="182" y="50" text-anchor="middle">Web API</text>
+              <line class="d-wire" x1="372" y1="58" x2="496" y2="58" />
+              <line class="d-flow" x1="372" y1="58" x2="496" y2="58" />
+              <path class="d-head" d="M496,54 L502,58 L496,62 Z" />
+              <text class="d-edge" x="434" y="50" text-anchor="middle">renders in</text>
+              <!-- write-back loop -->
+              <path class="d-wire" d="M562,82 C562,98 556,100 540,100 L80,100 C64,100 58,98 58,88" />
+              <path class="d-flow" d="M562,82 C562,98 556,100 540,100 L80,100 C64,100 58,98 58,88" />
+              <path class="d-head" d="M54,88 L58,82 L62,88 Z" />
+              <text class="d-edge" x="310" y="115" text-anchor="middle">user edits save back</text>
+            </svg>
+          </div>
         </li>
 
-        <li class="project-card reveal">
-          <p class="project-num">work_03</p>
-          <h3 class="project-name">ERP Reporting &amp; Reconciliation</h3>
-          <p class="project-desc">
-            SQL reporting layer over legacy ERP tables (RM, POP, AR) driving financial reconciliation and integrations,
-            plus the internal tooling that made the numbers trustworthy.
-          </p>
-          <ul class="project-stack">
-            <li class="stack-tag">SQL</li>
-            <li class="stack-tag">ETL</li>
-            <li class="stack-tag">Reporting</li>
-          </ul>
+        <li class="project-row reveal" data-slug="erp-reporting">
+          <div class="project-info">
+            <p class="project-num">work_03</p>
+            <h3 class="project-name">ERP Reporting &amp; Reconciliation</h3>
+            <p class="project-desc">
+              SQL reporting layer over legacy ERP tables (RM, POP, AR) driving financial reconciliation and
+              integrations, plus the internal tooling that made the numbers trustworthy.
+            </p>
+            <ul class="project-stack">
+              <li class="stack-tag">SQL</li>
+              <li class="stack-tag">ETL</li>
+              <li class="stack-tag">Reporting</li>
+            </ul>
+          </div>
+          <div class="project-diagram">
+            <svg viewBox="0 0 620 120" role="img"
+              aria-label="Merge: the RM, POP and AR ERP tables are extracted into SQL views, normalized through a reconciliation layer, and published as reports.">
+              <rect class="d-node" x="0" y="14" width="76" height="24" rx="3" />
+              <text class="d-label" x="38" y="30" text-anchor="middle">RM</text>
+              <rect class="d-node" x="0" y="46" width="76" height="24" rx="3" />
+              <text class="d-label" x="38" y="62" text-anchor="middle">POP</text>
+              <rect class="d-node" x="0" y="78" width="76" height="24" rx="3" />
+              <text class="d-label" x="38" y="94" text-anchor="middle">AR</text>
+              <rect class="d-node" x="150" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="208" y="62" text-anchor="middle">SQL views</text>
+              <rect class="d-node" x="326" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="384" y="62" text-anchor="middle">Recon layer</text>
+              <rect class="d-node" x="502" y="38" width="116" height="40" rx="3" />
+              <text class="d-label" x="560" y="62" text-anchor="middle">Reports</text>
+              <!-- merge -->
+              <path class="d-wire" d="M80,26 C114,26 116,58 142,58" />
+              <path class="d-flow" d="M80,26 C114,26 116,58 142,58" />
+              <path class="d-wire" d="M80,58 L142,58" />
+              <path class="d-flow" d="M80,58 L142,58" />
+              <path class="d-wire" d="M80,90 C114,90 116,58 142,58" />
+              <path class="d-flow" d="M80,90 C114,90 116,58 142,58" />
+              <path class="d-head" d="M142,54 L148,58 L142,62 Z" />
+              <text class="d-edge" x="111" y="10" text-anchor="middle">extract</text>
+              <line class="d-wire" x1="270" y1="58" x2="318" y2="58" />
+              <line class="d-flow" x1="270" y1="58" x2="318" y2="58" />
+              <path class="d-head" d="M318,54 L324,58 L318,62 Z" />
+              <text class="d-edge" x="294" y="50" text-anchor="middle">normalize</text>
+              <line class="d-wire" x1="446" y1="58" x2="494" y2="58" />
+              <line class="d-flow" x1="446" y1="58" x2="494" y2="58" />
+              <path class="d-head" d="M494,54 L500,58 L494,62 Z" />
+              <text class="d-edge" x="470" y="50" text-anchor="middle">publish</text>
+            </svg>
+          </div>
         </li>
+
       </ul>
 
       <p class="projects-note">
@@ -1536,9 +1884,6 @@
             Whether you're looking for a technical partner, need help with a complex integration,
             or just want to talk shop — I'm always open to interesting conversations.
           </p>
-          <!-- <p class="comment" style="font-style:italic; color: var(--text-dim); font-size:13px;">
-            // Currently open to full-time roles and freelance engagements.
-          </p> -->
         </div>
 
         <div class="contact-links reveal">
@@ -1575,11 +1920,6 @@
             <span class="contact-link-label">linkedin.com/in/calebgeiger</span>
             <span class="contact-link-arrow" aria-hidden="true">↗</span>
           </a>
-          <!--- <a href="/caleb-geiger-resume.pdf" class="contact-link">
-            <span class="contact-link-icon">📄</span>
-            <span class="contact-link-label">Download Resume (PDF)</span>
-            <span class="contact-link-arrow">↓</span>
-          </a> -->
         </div>
       </div>
     </section>
@@ -1590,7 +1930,6 @@
     <p>Built with <span aria-hidden="true">&lt;/&gt;</span> by Caleb Geiger · <span id="year">2026</span></p>
   </footer>
 
-  <!-- Back to top button -->
   <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
     <span aria-hidden="true">↑</span>
   </button>
@@ -1601,58 +1940,56 @@
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      /* ── Footer year ─── */
       document.getElementById('year').textContent = new Date().getFullYear();
 
+      console.log(
+        '%c caleb geiger ',
+        'background:#39ff5a;color:#0a0e0a;font-weight:700;padding:2px 6px;border-radius:2px',
+        '\nThe terminal in the hero is real — try `help`.\n' +
+        'Hand-written HTML/CSS/JS. One file, no build step.\n' +
+        'calebgeiger@live.com'
+      );
+
       /* ── Typewriter on hero prompt ───
-         Decorative only — the element is aria-hidden, so retyping it is
-         invisible to assistive tech. Skipped entirely for reduced motion. */
+         Decorative only — the element is aria-hidden. */
       const promptEl = document.querySelector('.hero-prompt');
       if (promptEl && !reduceMotion.matches) {
         const promptText = promptEl.textContent;
         promptEl.textContent = '';
-        promptEl.style.animation = 'none';
-        promptEl.style.opacity = '1';
-
-        let charIndex = 0;
-        const typeInterval = setInterval(() => {
-          promptEl.textContent += promptText[charIndex++];
-          if (charIndex >= promptText.length) clearInterval(typeInterval);
+        let i = 0;
+        const iv = setInterval(() => {
+          promptEl.textContent += promptText[i++];
+          if (i >= promptText.length) clearInterval(iv);
         }, 38);
       }
 
-      /* ── Scroll reveal (section-relative stagger) ─── */
+      /* ── Scroll reveal ─── */
       const revealEls = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const section = entry.target.closest('section');
-            const sibs = section ? Array.from(section.querySelectorAll('.reveal')) : [];
-            const idx = sibs.indexOf(entry.target);
-            entry.target.style.transitionDelay = Math.max(0, idx * 0.1) + 's';
-            entry.target.classList.add('visible');
-            /* One-shot: nothing re-hides, so stop watching. */
-            obs.unobserve(entry.target);
+        const obs = new IntersectionObserver((entries, o) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const sec = e.target.closest('section');
+            const sibs = sec ? Array.from(sec.querySelectorAll('.reveal')) : [];
+            e.target.style.transitionDelay = Math.max(0, sibs.indexOf(e.target) * 0.1) + 's';
+            e.target.classList.add('visible');
+            o.unobserve(e.target);
           });
         }, { threshold: 0.12 });
-        revealEls.forEach(el => observer.observe(el));
+        revealEls.forEach(el => obs.observe(el));
       } else {
         revealEls.forEach(el => el.classList.add('visible'));
       }
 
-      /* ── Scroll state: progress bar + active nav + back-to-top ───
-         Section offsets are measured once (and on resize) so the scroll
-         handler never forces a layout, and all writes happen in one frame. */
+      /* ── Scroll state: progress + active nav + back-to-top ───
+         Offsets measured once (and on resize) so scrolling never forces
+         a layout; all writes land in a single animation frame. */
       const sections = Array.from(document.querySelectorAll('main section[id]'));
       const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
       const progress = document.getElementById('scroll-progress');
       const backToTop = document.getElementById('back-to-top');
 
-      let offsets = [];
-      let scrollMax = 0;
-      let ticking = false;
-      let activeId = null;
+      let offsets = [], scrollMax = 0, ticking = false, activeId = null;
 
       function measure() {
         offsets = sections.map(s => ({ id: s.id, top: s.offsetTop }));
@@ -1667,31 +2004,25 @@
         progress.style.width = (scrollMax > 0 ? Math.min(y / scrollMax, 1) * 100 : 0) + '%';
         backToTop.classList.toggle('visible', y > 400);
 
-        /* Whatever section owns the upper third of the viewport is "current";
-           at the very bottom the last section wins, since short final
-           sections can never scroll their own top past the marker. */
+        /* Whatever section owns the upper third of the viewport is current;
+           at the very bottom the last one wins, since a short final section
+           can never scroll its own top past the marker. */
         const marker = y + window.innerHeight * 0.35;
         let current = offsets.length ? offsets[0].id : null;
-        for (const o of offsets) {
-          if (o.top <= marker) current = o.id;
-        }
+        for (const o of offsets) if (o.top <= marker) current = o.id;
         if (scrollMax - y < 4 && offsets.length) current = offsets[offsets.length - 1].id;
 
         if (current !== activeId) {
           activeId = current;
-          navLinks.forEach(link => {
-            const on = link.getAttribute('href') === '#' + current;
-            if (on) link.setAttribute('aria-current', 'true');
-            else link.removeAttribute('aria-current');
+          navLinks.forEach(l => {
+            if (l.getAttribute('href') === '#' + current) l.setAttribute('aria-current', 'true');
+            else l.removeAttribute('aria-current');
           });
         }
       }
 
       function onScroll() {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(update);
-        }
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
@@ -1700,13 +2031,8 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
       measure();
 
-      /* ── Back-to-top ─── */
       backToTop.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: reduceMotion.matches ? 'auto' : 'smooth'
-        });
-        /* Return focus to the top of the document, not just the viewport. */
+        window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
         document.querySelector('.nav-logo').focus({ preventScroll: true });
       });
 
@@ -1721,26 +2047,242 @@
       }
 
       toggle.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
-
-      navLinks.forEach(link => link.addEventListener('click', () => setMenu(false)));
+      navLinks.forEach(l => l.addEventListener('click', () => setMenu(false)));
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && nav.classList.contains('open')) {
-          setMenu(false);
-          toggle.focus();
-        }
+        if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); toggle.focus(); }
       });
-
       document.addEventListener('click', (e) => {
         if (nav.classList.contains('open') && !nav.contains(e.target)) setMenu(false);
       });
 
-      /* Reset the menu if the viewport grows past the mobile breakpoint
-         while it's open, so the desktop nav isn't left in "open" state. */
       const wide = window.matchMedia('(min-width: 641px)');
       const onWide = (e) => { if (e.matches) setMenu(false); };
       if (wide.addEventListener) wide.addEventListener('change', onWide);
       else wide.addListener(onWide);
+
+
+      /* ═══════════════════════════════════════════════════════════
+         Hero terminal
+
+         Every command reads its answer out of the live DOM rather than
+         from a second copy of the content, so editing a project or a
+         job in the markup updates the terminal for free — there is no
+         parallel data structure to drift.
+         ═══════════════════════════════════════════════════════════ */
+      const out = document.getElementById('term-out');
+      const input = document.getElementById('term-input');
+      const form = document.getElementById('term-form');
+      const body = document.getElementById('term-body');
+
+      if (out && input) {
+        const txt = (el) => (el ? el.textContent.trim().replace(/\s+/g, ' ') : '');
+        const all = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+        /* Build a line from [text, className] pairs. Everything goes in
+           via textContent, so DOM-sourced content can never inject markup. */
+        function print(parts) {
+          const div = document.createElement('div');
+          (Array.isArray(parts) ? parts : [[parts, '']]).forEach(([t, c]) => {
+            const s = document.createElement('span');
+            if (c) s.className = c;
+            s.textContent = t;
+            div.appendChild(s);
+          });
+          out.appendChild(div);
+          return div;
+        }
+
+        const blank = () => print('');
+        const scroll = () => { body.scrollTop = body.scrollHeight; };
+
+        const projects = () => all('.project-row').map(row => ({
+          slug: row.dataset.slug,
+          name: txt(row.querySelector('.project-name')),
+          desc: txt(row.querySelector('.project-desc')),
+          stack: all('.stack-tag', row).map(txt)
+        }));
+
+        const COMMANDS = {
+          help() {
+            print([['Available commands', 't-val']]);
+            blank();
+            [
+              ['whoami', 'name, role, location'],
+              ['about', 'the short version'],
+              ['skills', 'tech stack by category'],
+              ['experience', 'work history'],
+              ['ls', 'list projects'],
+              ['cat <project>', 'project detail + stack'],
+              ['contact', 'email and profiles'],
+              ['goto <section>', 'scroll the page'],
+              ['crt', 'toggle the scanline effect'],
+              ['clear', 'clear the screen']
+            ].forEach(([c, d]) => print([['  ' + c.padEnd(16), 't-key'], [d, 't-val']]));
+          },
+
+          whoami() {
+            print([['Caleb Geiger', 't-id']]);
+            print([['Developer / Technical Solutions Architect', 't-val']]);
+            print([['Pittsburgh, Pennsylvania · building since 2020', 't-muted']]);
+          },
+
+          about() {
+            print([[txt(document.querySelector('.hero-desc')), 't-val']]);
+          },
+
+          skills() {
+            all('.skill-category').forEach(cat => {
+              print([[txt(cat.querySelector('.skill-cat-title')), 't-key']]);
+              print([['  ' + all('.tag', cat).map(txt).join(', '), 't-val']]);
+            });
+          },
+
+          experience() {
+            all('.exp-item').forEach(item => {
+              print([
+                [txt(item.querySelector('.exp-meta')).padEnd(17), 't-data'],
+                [txt(item.querySelector('.exp-role')), 't-key']
+              ]);
+              print([['                 ' + txt(item.querySelector('.exp-company')), 't-muted']]);
+            });
+          },
+
+          ls() {
+            projects().forEach(p => print([
+              ['  ' + p.slug.padEnd(18), 't-key'],
+              [p.name, 't-val']
+            ]));
+            print([['  use `cat <name>` for detail', 't-muted']]);
+          },
+
+          cat(arg) {
+            if (!arg) return print([['usage: cat <project>  —  see `ls`', 't-err']]);
+            const p = projects().find(x => x.slug === arg || x.slug.startsWith(arg));
+            if (!p) return print([['cat: ' + arg + ': no such project', 't-err']]);
+            print([[p.name, 't-id']]);
+            print([[p.desc, 't-val']]);
+            print([['stack: ', 't-muted'], [p.stack.join(' · '), 't-data']]);
+          },
+
+          contact() {
+            all('.contact-link').forEach(a => {
+              const div = print([['  ']]);
+              const link = document.createElement('a');
+              link.href = a.href;
+              link.textContent = txt(a.querySelector('.contact-link-label'));
+              if (a.target) { link.target = a.target; link.rel = 'noopener'; }
+              div.appendChild(link);
+            });
+          },
+
+          goto(arg) {
+            const el = arg && document.getElementById(arg);
+            if (!el) return print([['goto: unknown section. try: about, skills, experience, projects, contact', 't-err']]);
+            el.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+            print([['→ ' + arg, 't-muted']]);
+          },
+
+          crt() {
+            const off = document.documentElement.classList.toggle('no-crt');
+            print([['scanlines ' + (off ? 'off' : 'on'), 't-muted']]);
+          },
+
+          clear() { out.textContent = ''; },
+
+          /* flavour */
+          sudo() { print([['nice try.', 't-err']]); },
+          exit() { print([['there is no exit. just scroll.', 't-muted']]); },
+          rm() { print([['permission denied (and rude).', 't-err']]); }
+        };
+
+        const NAMES = Object.keys(COMMANDS);
+
+        function run(raw) {
+          const line = raw.trim();
+          print([['$ ', 't-key'], [line, 't-cmd']]);
+          if (!line) return;
+
+          const [name, ...rest] = line.split(/\s+/);
+          const fn = COMMANDS[name.toLowerCase()];
+
+          if (fn) fn(rest.join(' ').toLowerCase());
+          else print([['command not found: ' + name + "  —  try 'help'", 't-err']]);
+
+          blank();
+          scroll();
+        }
+
+        /* history + tab-completion make it feel like a shell rather than a prop */
+        const history = [];
+        let hIndex = -1;
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const v = input.value;
+          if (v.trim()) { history.push(v); hIndex = history.length; }
+          input.value = '';
+          run(v);
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (hIndex > 0) input.value = history[--hIndex];
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (hIndex < history.length - 1) input.value = history[++hIndex];
+            else { hIndex = history.length; input.value = ''; }
+          } else if (e.key === 'Tab') {
+            e.preventDefault();
+            const cur = input.value.trim();
+            if (!cur || cur.includes(' ')) return;
+            const hit = NAMES.filter(n => n.startsWith(cur.toLowerCase()));
+            if (hit.length === 1) input.value = hit[0] + ' ';
+            else if (hit.length > 1) { print([[hit.join('  '), 't-muted']]); scroll(); }
+          } else if (e.key === 'l' && e.ctrlKey) {
+            e.preventDefault();
+            COMMANDS.clear();
+          }
+        });
+
+        /* Clicking anywhere in the window focuses the prompt, like a real one.
+           preventScroll stops the page jumping to the hero on a stray click. */
+        body.addEventListener('mousedown', (e) => {
+          if (e.target.tagName !== 'A' && !window.getSelection().toString()) {
+            setTimeout(() => input.focus({ preventScroll: true }), 0);
+          }
+        });
+
+        /* Boot. aria-live is attached only afterwards, so a screen reader
+           gets command results but not the opening animation. */
+        function boot() {
+          print([['caleb@portfolio', 't-key'], [' — v2, no build step', 't-muted']]);
+          COMMANDS.whoami();
+          blank();
+          print([["type ", 't-muted'], ['help', 't-key'], [' to look around', 't-muted']]);
+          blank();
+          scroll();
+          out.setAttribute('aria-live', 'polite');
+        }
+
+        if (reduceMotion.matches) {
+          boot();
+        } else {
+          /* Type the opening line out, then hand over to the user. */
+          const opening = 'whoami';
+          const lead = print([['$ ', 't-key'], ['', 't-cmd']]);
+          const target = lead.lastChild;
+          let k = 0;
+          const iv = setInterval(() => {
+            target.textContent += opening[k++];
+            if (k >= opening.length) {
+              clearInterval(iv);
+              setTimeout(() => { out.textContent = ''; boot(); }, 260);
+            }
+          }, 70);
+        }
+      }
     })();
   </script>
 
