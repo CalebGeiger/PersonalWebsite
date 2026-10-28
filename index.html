@@ -132,6 +132,8 @@
     .exp-meta,
     .project-num,
     .terminal-body,
+    .terminal-header,
+    .vim-status,
     .term,
     .btn,
     .status-bar,
@@ -480,6 +482,7 @@
        everything it can print already exists in the page below, and it
        reads that content out of the DOM rather than duplicating it. */
     .term {
+      position: relative;
       background: rgba(9, 13, 9, 0.86);
       border: 1px solid var(--border-lit);
       border-radius: 5px;
@@ -490,38 +493,56 @@
       height: 400px;
     }
 
-    .term-bar {
-      background: var(--bg3);
-      padding: 0.55rem 0.9rem;
+    /* Phosphor: an inner vignette and a faint glow on the glyphs. Both
+       belong to the CRT effect, so `crt` switches them off with the
+       scanlines. */
+    .term::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+    }
+
+    .term-out,
+    .term-line,
+    .term-ps1-info {
+      text-shadow: 0 0 6px color-mix(in srgb, currentColor 40%, transparent);
+    }
+
+    .no-crt .term::after {
+      display: none;
+    }
+
+    .no-crt .term-out,
+    .no-crt .term-line,
+    .no-crt .term-ps1-info {
+      text-shadow: none;
+    }
+
+    /* tmux's default status line — session, window list, then pane title
+       and clock on the right. Replaces the stock macOS traffic lights,
+       which every terminal mock-up on the internet already has. */
+    .tmux-status {
+      flex: 0 0 auto;
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      border-bottom: 1px solid var(--border);
-      flex: 0 0 auto;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .dot-red {
-      background: #ff5f57;
-    }
-
-    .dot-amber {
-      background: #febc2e;
-    }
-
-    .dot-green {
-      background: #28c840;
-    }
-
-    .term-title {
-      margin-left: auto;
+      gap: 0.9ch;
+      padding: 0 0.6rem;
+      height: 22px;
+      background: var(--live-dim);
+      color: var(--bg);
       font-size: 11px;
-      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .tmux-session {
+      font-weight: 700;
+    }
+
+    .tmux-right {
+      margin-left: auto;
     }
 
     .term-body {
@@ -548,9 +569,54 @@
       gap: 0.5rem;
     }
 
+    /* Two-line, starship-style prompt: context on top, ❯ on the input
+       line. The ❯ turns red after a failed command, as starship does. */
+    .term-ps1-info {
+      color: var(--text-faint);
+    }
+
     .term-ps1 {
       color: var(--live);
       flex: 0 0 auto;
+      transition: color 0.2s;
+    }
+
+    .term.failed .term-ps1 {
+      color: #ff8b8b;
+    }
+
+    /* neofetch card. The art is set in the system mono on purpose: the
+       Google Fonts cut of JetBrains Mono ships without box-drawing and
+       block glyphs, and mixing two fonts inside one drawing misaligns it. */
+    .nf {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0 2.2ch;
+      align-items: center;
+      margin: 0.2rem 0 0.4rem;
+    }
+
+    .term-out .nf-art {
+      white-space: pre;
+      overflow-wrap: normal;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+      font-size: 10.5px;
+      line-height: 1.12;
+      color: var(--ident);
+    }
+
+    .nf-key {
+      display: inline-block;
+      min-width: 8ch;
+      color: var(--data-dim);
+    }
+
+    .nf-swatch {
+      display: inline-block;
+      width: 2.4ch;
+      height: 0.9em;
+      margin-right: 0.6ch;
+      vertical-align: -0.1em;
     }
 
     .term-input {
@@ -619,23 +685,33 @@
       overflow: hidden;
     }
 
+    /* The about box is a vim buffer: tabline on top, statusline below,
+       tildes past the end of the file. Unlike the hero terminal it shows
+       on every screen size, so this is the chrome phones actually see. */
     .terminal-header {
       background: var(--bg3);
-      padding: 0.6rem 1rem;
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      align-items: stretch;
       border-bottom: 1px solid var(--border);
+      font-size: 11px;
     }
 
-    .terminal-filename {
+    .vim-tab {
+      padding: 0.45rem 1rem;
+      background: var(--bg2);
+      color: var(--text);
+      border-top: 2px solid var(--live-dim);
+      border-right: 1px solid var(--border);
+    }
+
+    .vim-tab-fill {
       margin-left: auto;
-      font-size: 11px;
-      color: var(--text-dim);
+      padding: 0.45rem 1rem;
+      color: var(--text-faint);
     }
 
     .terminal-body {
-      padding: 1.5rem;
+      padding: 1.5rem 1.5rem 0.9rem 0.9rem;
       line-height: 1.9;
       font-size: 13px;
       overflow-x: auto;
@@ -643,7 +719,12 @@
 
     .code-line {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.9rem;
+    }
+
+    /* cursorline — follows the pointer, and the statusline reports it */
+    .code-line:hover {
+      background: var(--bg3);
     }
 
     .line-num {
@@ -652,6 +733,52 @@
       color: var(--text-faint);
       user-select: none;
       font-size: 12px;
+    }
+
+    .code-line:hover .line-num {
+      color: var(--ident);
+    }
+
+    .vim-tilde {
+      color: var(--text-faint);
+      padding-left: 0.4rem;
+      user-select: none;
+    }
+
+    .vim-status {
+      display: flex;
+      align-items: stretch;
+      background: var(--bg3);
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .vim-status>span {
+      padding: 0.25rem 0.8rem;
+    }
+
+    .vim-mode {
+      background: var(--live-dim);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .vim-file {
+      color: var(--text);
+    }
+
+    .vim-meta {
+      margin-left: auto;
+      color: var(--text-dim);
+    }
+
+    .vim-pos {
+      background: var(--border-lit);
+      color: var(--text);
+      min-width: 9ch;
+      text-align: right;
     }
 
     /* Indentation comes from padding, not source whitespace, so the block
@@ -981,9 +1108,16 @@
       transition: opacity 0.25s;
     }
 
-    .project-row:hover .d-flow {
+    .project-row:hover .d-flow,
+    .project-row.tracing .d-flow {
       opacity: 0.95;
       animation: flow 0.75s linear infinite;
+    }
+
+    /* `trace <project>` in the hero terminal runs the diagram remotely */
+    .project-row.tracing {
+      border-color: var(--live-dim);
+      box-shadow: 0 0 0 1px var(--live-dim), 0 0 34px rgba(57, 255, 90, 0.1);
     }
 
     @keyframes flow {
@@ -1277,8 +1411,17 @@
       }
 
       .terminal-body {
-        padding: 1.2rem 0.9rem;
+        padding: 1.2rem 0.9rem 0.8rem 0.4rem;
         font-size: 12px;
+      }
+
+      .code-line {
+        gap: 0.6rem;
+      }
+
+      /* filetype and encoding are the first thing to go on a phone */
+      .vim-meta {
+        visibility: hidden;
       }
     }
 
@@ -1325,6 +1468,8 @@
       .cursor,
       .hero-term,
       .terminal-header,
+      .vim-status,
+      .vim-tilde,
       .contact-link-arrow,
       .contact-link-icon,
       .section-label::after,
@@ -1348,6 +1493,12 @@
         background: #fff !important;
         font-size: 10pt;
         line-height: 1.5;
+      }
+
+      /* Printing from the top must not lose sections not yet scrolled to */
+      .js .reveal {
+        opacity: 1 !important;
+        transform: none !important;
       }
 
       section {
@@ -1513,7 +1664,7 @@
       <div class="hero-inner">
 
         <div class="hero-text">
-          <p class="hero-prompt" aria-hidden="true">visitor@portfolio:~$ whoami</p>
+          <p class="hero-prompt" aria-hidden="true">~/portfolio ❯ whoami</p>
 
           <h1 class="hero-name" id="hero-name">
             Caleb <span class="accent">Geiger</span><span class="cursor" aria-hidden="true"></span>
@@ -1537,19 +1688,20 @@
         <!-- Real terminal. Reads its content from the page below. -->
         <div class="hero-term">
           <div class="term" id="term">
-            <div class="term-bar" aria-hidden="true">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-amber"></span>
-              <span class="dot dot-green"></span>
-              <span class="term-title">caleb@portfolio: ~</span>
-            </div>
             <div class="term-body" id="term-body">
               <div class="term-out" id="term-out"></div>
+              <div class="term-ps1-info" aria-hidden="true"><span class="t-val">visitor</span> in <span
+                  class="t-data">~/portfolio</span> on <span class="t-data">main</span></div>
               <form class="term-line" id="term-form" autocomplete="off">
-                <label class="term-ps1" for="term-input" aria-hidden="true">$</label>
+                <label class="term-ps1" for="term-input" aria-hidden="true">❯</label>
                 <input class="term-input" id="term-input" type="text" autocomplete="off" autocapitalize="off"
                   autocorrect="off" spellcheck="false" aria-label="Terminal — type help for commands" />
               </form>
+            </div>
+            <div class="tmux-status" aria-hidden="true">
+              <span class="tmux-session">[cg]</span>
+              <span>0:<span id="tmux-window">zsh</span>*</span>
+              <span class="tmux-right">"caleb@pgh" <span id="tmux-clock"></span></span>
             </div>
           </div>
         </div>
@@ -1568,12 +1720,10 @@
 
       <div class="terminal-box reveal">
         <div class="terminal-header" aria-hidden="true">
-          <span class="dot dot-red"></span>
-          <span class="dot dot-amber"></span>
-          <span class="dot dot-green"></span>
-          <span class="terminal-filename">about.js</span>
+          <span class="vim-tab">about.js</span>
+          <span class="vim-tab-fill">[RO]</span>
         </div>
-        <div class="terminal-body">
+        <div class="terminal-body" id="vim-buf">
           <div class="code-line"><span class="line-num" aria-hidden="true">1</span><span class="code-txt"><span class="kw">const</span> <span class="fn">developer</span> = {</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">2</span><span class="code-txt i1"><span class="prop">name</span>: <span class="str">"Caleb Geiger"</span>,</span></div>
           <div class="code-line"><span class="line-num" aria-hidden="true">3</span><span class="code-txt i1"><span class="prop">role</span>: <span class="str">"Developer / Technical Solutions Architect"</span>,</span></div>
@@ -1595,6 +1745,14 @@
           <!-- Add a currentlyLearning line here when you have one worth naming, e.g.:
           <div class="code-line"><span class="line-num" aria-hidden="true">19</span><span class="code-txt i1"><span class="prop">currentlyLearning</span>: <span class="str">"..."</span>,</span></div> -->
           <div class="code-line"><span class="line-num" aria-hidden="true">19</span><span class="code-txt">};</span></div>
+          <div class="vim-tilde" aria-hidden="true">~</div>
+          <div class="vim-tilde" aria-hidden="true">~</div>
+        </div>
+        <div class="vim-status" aria-hidden="true">
+          <span class="vim-mode">NORMAL</span>
+          <span class="vim-file">about.js</span>
+          <span class="vim-meta">javascript · utf-8</span>
+          <span class="vim-pos" id="vim-pos">All 19:1</span>
         </div>
       </div>
     </section>
@@ -2061,6 +2219,22 @@
       if (wide.addEventListener) wide.addEventListener('change', onWide);
       else wide.addListener(onWide);
 
+      /* ── vim statusline: report the line under the pointer ─── */
+      const vimBuf = document.getElementById('vim-buf');
+      const vimPos = document.getElementById('vim-pos');
+      if (vimBuf && vimPos) {
+        const lineCount = vimBuf.querySelectorAll('.code-line').length;
+        const restPos = vimPos.textContent;
+        vimBuf.addEventListener('mouseover', (e) => {
+          const line = e.target.closest('.code-line');
+          if (!line) return;
+          const n = Number(line.querySelector('.line-num').textContent);
+          const pct = n === 1 ? 'Top' : n === lineCount ? 'Bot' : Math.round(n / lineCount * 100) + '%';
+          vimPos.textContent = pct + ' ' + n + ':1';
+        });
+        vimBuf.addEventListener('mouseleave', () => { vimPos.textContent = restPos; });
+      }
+
 
       /* ═══════════════════════════════════════════════════════════
          Hero terminal
@@ -2074,6 +2248,9 @@
       const input = document.getElementById('term-input');
       const form = document.getElementById('term-form');
       const body = document.getElementById('term-body');
+      const term = document.getElementById('term');
+      const tmuxWindow = document.getElementById('tmux-window');
+      const tmuxClock = document.getElementById('tmux-clock');
 
       if (out && input) {
         const txt = (el) => (el ? el.textContent.trim().replace(/\s+/g, ' ') : '');
@@ -2081,7 +2258,7 @@
 
         /* Build a line from [text, className] pairs. Everything goes in
            via textContent, so DOM-sourced content can never inject markup. */
-        function print(parts) {
+        function print(parts, parent) {
           const div = document.createElement('div');
           (Array.isArray(parts) ? parts : [[parts, '']]).forEach(([t, c]) => {
             const s = document.createElement('span');
@@ -2089,36 +2266,103 @@
             s.textContent = t;
             div.appendChild(s);
           });
-          out.appendChild(div);
+          (parent || out).appendChild(div);
           return div;
         }
 
-        const blank = () => print('');
+        /* A space, not '': an empty span has no line box and collapses */
+        const blank = () => print(' ');
         const scroll = () => { body.scrollTop = body.scrollHeight; };
 
+        /* Commands report failure by returning false — that is what turns
+           the prompt red, the way a non-zero exit code does in starship. */
+        const fail = (msg) => { print([[msg, 't-err']]); return false; };
+
         const projects = () => all('.project-row').map(row => ({
+          row,
           slug: row.dataset.slug,
           name: txt(row.querySelector('.project-name')),
           desc: txt(row.querySelector('.project-desc')),
           stack: all('.stack-tag', row).map(txt)
         }));
 
+        const findProject = (arg) => projects().find(x => x.slug === arg || x.slug.startsWith(arg));
+
+        /* Reads a property out of the about.js code block, so the
+           neofetch card and the source listing can't disagree. */
+        function prop(name) {
+          const key = all('#about .prop').find(el => txt(el) === name);
+          return key && key.nextElementSibling ? txt(key.nextElementSibling).replace(/^"|"$/g, '') : '';
+        }
+
+        const ART = [
+          ' ██████╗ ██████╗ ',
+          '██╔════╝██╔════╝ ',
+          '██║     ██║  ███╗',
+          '██║     ██║   ██║',
+          '╚██████╗╚██████╔╝',
+          ' ╚═════╝ ╚═════╝ '
+        ].join('\n');
+
+        let traceTimer = 0;
+
         const COMMANDS = {
           help() {
             print([['Available commands', 't-val']]);
             blank();
             [
+              ['neofetch', 'system info, such as it is'],
               ['whoami', 'name, role, location'],
               ['about', 'the short version'],
               ['skills', 'tech stack by category'],
               ['experience', 'work history'],
               ['ls', 'list projects'],
               ['cat <project>', 'project detail + stack'],
+              ['trace <project>', 'run its architecture diagram'],
               ['contact', 'email and profiles'],
               ['goto <section>', 'scroll the page'],
-              ['crt', 'toggle the scanline effect'],
+              ['crt', 'toggle scanlines + phosphor glow'],
               ['clear', 'clear the screen']
-            ].forEach(([c, d]) => print([['  ' + c.padEnd(16), 't-key'], [d, 't-val']]));
+            ].forEach(([c, d]) => print([['  ' + c.padEnd(17), 't-key'], [d, 't-val']]));
+          },
+
+          neofetch() {
+            const since = Number(prop('buildingSince'));
+            const job = document.querySelector('.exp-item');
+            const card = document.createElement('div');
+            card.className = 'nf';
+
+            const art = document.createElement('div');
+            art.className = 'nf-art';
+            art.setAttribute('aria-hidden', 'true');
+            art.textContent = ART;
+
+            const info = document.createElement('div');
+            const host = 'caleb@portfolio';
+            print([[host, 't-key']], info);
+            print([['-'.repeat(host.length), 't-muted']], info);
+            [
+              ['role', txt(job.querySelector('.exp-role'))],
+              ['at', txt(job.querySelector('.exp-company a'))],
+              ['base', prop('location')],
+              ['uptime', (new Date().getFullYear() - since) + ' yrs (since ' + since + ')'],
+              ['langs', all('.skill-category:first-child .tag').slice(0, 3).map(txt).join(' · ')],
+              ['shell', 'portfolio-sh, no build step']
+            ].forEach(([k, v]) => print([[k, 'nf-key'], [v, 't-val']], info));
+
+            /* neofetch ends on a colour row; here it's the site's palette */
+            const swatches = print('', info);
+            swatches.setAttribute('aria-hidden', 'true');
+            swatches.style.marginTop = '0.35rem';
+            ['--ident', '--live', '--data', '--text-dim', '--border-lit'].forEach(v => {
+              const s = document.createElement('span');
+              s.className = 'nf-swatch';
+              s.style.background = 'var(' + v + ')';
+              swatches.appendChild(s);
+            });
+
+            card.append(art, info);
+            out.appendChild(card);
           },
 
           whoami() {
@@ -2153,16 +2397,34 @@
               ['  ' + p.slug.padEnd(18), 't-key'],
               [p.name, 't-val']
             ]));
-            print([['  use `cat <name>` for detail', 't-muted']]);
+            print([['  cat <name> for detail · trace <name> to run it', 't-muted']]);
           },
 
           cat(arg) {
-            if (!arg) return print([['usage: cat <project>  —  see `ls`', 't-err']]);
-            const p = projects().find(x => x.slug === arg || x.slug.startsWith(arg));
-            if (!p) return print([['cat: ' + arg + ': no such project', 't-err']]);
+            if (!arg) return fail('usage: cat <project>  —  see `ls`');
+            const p = findProject(arg);
+            if (!p) return fail('cat: ' + arg + ': no such project');
             print([[p.name, 't-id']]);
             print([[p.desc, 't-val']]);
             print([['stack: ', 't-muted'], [p.stack.join(' · '), 't-data']]);
+            print([['trace ' + p.slug + ' to watch it run', 't-muted']]);
+          },
+
+          /* The one command only this terminal has: it reaches down the
+             page and runs the project's architecture diagram. */
+          trace(arg) {
+            if (!arg) return fail('usage: trace <project>  —  see `ls`');
+            const p = findProject(arg);
+            if (!p) return fail('trace: ' + arg + ': no such project');
+            const label = p.row.querySelector('svg').getAttribute('aria-label') || '';
+            print([['tracing ', 't-muted'], [p.slug, 't-key'], [' ↓', 't-muted']]);
+            print([[label, 't-data']]);
+
+            all('.project-row.tracing').forEach(r => r.classList.remove('tracing'));
+            clearTimeout(traceTimer);
+            p.row.classList.add('tracing');
+            traceTimer = setTimeout(() => p.row.classList.remove('tracing'), 6000);
+            p.row.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
           },
 
           contact() {
@@ -2178,36 +2440,48 @@
 
           goto(arg) {
             const el = arg && document.getElementById(arg);
-            if (!el) return print([['goto: unknown section. try: about, skills, experience, projects, contact', 't-err']]);
+            if (!el) return fail('goto: unknown section. try: about, skills, experience, projects, contact');
             el.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
             print([['→ ' + arg, 't-muted']]);
           },
 
           crt() {
             const off = document.documentElement.classList.toggle('no-crt');
-            print([['scanlines ' + (off ? 'off' : 'on'), 't-muted']]);
+            print([['crt effects ' + (off ? 'off' : 'on'), 't-muted']]);
           },
 
           clear() { out.textContent = ''; },
 
           /* flavour */
-          sudo() { print([['nice try.', 't-err']]); },
+          sudo() { return fail('nice try.'); },
           exit() { print([['there is no exit. just scroll.', 't-muted']]); },
-          rm() { print([['permission denied (and rude).', 't-err']]); }
+          rm() { return fail('permission denied (and rude).'); }
         };
 
         const NAMES = Object.keys(COMMANDS);
 
+        /* Argument completion, per command */
+        const slugs = () => projects().map(p => p.slug);
+        const ARGS = { cat: slugs, trace: slugs, goto: () => sections.map(s => s.id) };
+
+        const echo = (line) => print([['❯ ', 't-key'], [line, 't-cmd']]);
+
         function run(raw) {
           const line = raw.trim();
-          print([['$ ', 't-key'], [line, 't-cmd']]);
+          echo(line);
           if (!line) return;
 
           const [name, ...rest] = line.split(/\s+/);
-          const fn = COMMANDS[name.toLowerCase()];
+          const fn = Object.hasOwn(COMMANDS, name.toLowerCase()) && COMMANDS[name.toLowerCase()];
 
-          if (fn) fn(rest.join(' ').toLowerCase());
-          else print([['command not found: ' + name + "  —  try 'help'", 't-err']]);
+          let ok;
+          if (fn) {
+            ok = fn(rest.join(' ').toLowerCase()) !== false;
+            tmuxWindow.textContent = name.toLowerCase();
+          } else {
+            ok = fail('command not found: ' + name + "  —  try 'help'");
+          }
+          term.classList.toggle('failed', !ok);
 
           blank();
           scroll();
@@ -2235,10 +2509,14 @@
             else { hIndex = history.length; input.value = ''; }
           } else if (e.key === 'Tab') {
             e.preventDefault();
-            const cur = input.value.trim();
-            if (!cur || cur.includes(' ')) return;
-            const hit = NAMES.filter(n => n.startsWith(cur.toLowerCase()));
-            if (hit.length === 1) input.value = hit[0] + ' ';
+            const words = input.value.replace(/^\s+/, '').split(/\s+/);
+            const cmd = words[0].toLowerCase();
+            let pool, stem, prefix;
+            if (words.length === 1 && words[0]) { pool = NAMES; stem = cmd; prefix = ''; }
+            else if (words.length === 2 && Object.hasOwn(ARGS, cmd)) { pool = ARGS[cmd](); stem = words[1].toLowerCase(); prefix = cmd + ' '; }
+            else return;
+            const hit = pool.filter(n => n.startsWith(stem));
+            if (hit.length === 1) input.value = prefix + hit[0] + (prefix ? '' : ' ');
             else if (hit.length > 1) { print([[hit.join('  '), 't-muted']]); scroll(); }
           } else if (e.key === 'l' && e.ctrlKey) {
             e.preventDefault();
@@ -2254,11 +2532,24 @@
           }
         });
 
+        /* tmux clock — his local time, not the visitor's */
+        const clockFmt = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/New_York', hourCycle: 'h23',
+          hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short', year: '2-digit'
+        });
+        function tick() {
+          const t = {};
+          clockFmt.formatToParts(new Date()).forEach(p => { t[p.type] = p.value; });
+          tmuxClock.textContent = t.hour + ':' + t.minute + ' ' + t.day + '-' + t.month + '-' + t.year;
+        }
+        tick();
+        setInterval(tick, 15000);
+
         /* Boot. aria-live is attached only afterwards, so a screen reader
            gets command results but not the opening animation. */
         function boot() {
-          print([['caleb@portfolio', 't-key'], [' — v2, no build step', 't-muted']]);
-          COMMANDS.whoami();
+          COMMANDS.neofetch();
+          tmuxWindow.textContent = 'neofetch';
           blank();
           print([["type ", 't-muted'], ['help', 't-key'], [' to look around', 't-muted']]);
           blank();
@@ -2266,19 +2557,19 @@
           out.setAttribute('aria-live', 'polite');
         }
 
+        const opening = 'neofetch';
         if (reduceMotion.matches) {
+          echo(opening);
           boot();
         } else {
-          /* Type the opening line out, then hand over to the user. */
-          const opening = 'whoami';
-          const lead = print([['$ ', 't-key'], ['', 't-cmd']]);
-          const target = lead.lastChild;
+          /* Type the opening command out, then hand over to the user. */
+          const target = echo('').lastChild;
           let k = 0;
           const iv = setInterval(() => {
             target.textContent += opening[k++];
             if (k >= opening.length) {
               clearInterval(iv);
-              setTimeout(() => { out.textContent = ''; boot(); }, 260);
+              setTimeout(boot, 260);
             }
           }, 70);
         }

@@ -58,13 +58,27 @@ It reads its answers **out of the live DOM** rather than from a second copy of t
 content. Edit a project or a job in the markup and the terminal updates for free;
 there is no parallel data structure to drift. All output goes in via `textContent`.
 
-Commands: `help` `whoami` `about` `skills` `experience` `ls` `cat <project>`
-`contact` `goto <section>` `crt` `clear`, plus arrow-key history, Tab completion
-and `Ctrl-L`. To add one, add a method to the `COMMANDS` object — it is picked up
-by `help`, by Tab completion and by the dispatcher automatically.
+Commands: `help` `neofetch` `whoami` `about` `skills` `experience` `ls`
+`cat <project>` `trace <project>` `contact` `goto <section>` `crt` `clear`, plus
+arrow-key history, Tab completion (of commands and of `cat`/`trace`/`goto`
+arguments) and `Ctrl-L`. To add one, add a method to the `COMMANDS` object — Tab
+completion and the dispatcher pick it up automatically; add a line to the list in
+`help()` too. A command that fails should `return fail(msg)`, which turns the ❯
+prompt red until the next success.
 
-`cat` matches on the `data-slug` attribute of each `.project-row`, so keep those
-slugs in sync if you rename a project.
+`cat` and `trace` match on the `data-slug` attribute of each `.project-row`, so
+keep those slugs in sync if you rename a project. `trace` scrolls to the row and
+runs its diagram's `.d-flow` animation for a few seconds (the `.tracing` class).
+
+**Chrome.** No macOS traffic lights anywhere. The hero terminal has a tmux
+status line (window name follows the last command, clock is Pittsburgh time), a
+two-line starship-style prompt, and boots into a `neofetch` card whose values are
+read from `#about` and `#experience`. The about box is a vim buffer: tabline,
+statusline, `~` past EOF, and a cursorline whose position the statusline reports.
+The 404 page uses the same tmux bar. The neofetch art is set in the *system*
+mono, since the Google Fonts cut of JetBrains Mono has no box-drawing or block
+glyphs. Phosphor glow and vignette are part of the CRT effect and toggle with
+`crt`.
 
 ## Architecture diagrams
 
@@ -89,7 +103,8 @@ that label is the only thing a screen reader gets. Keep text inside the viewBox
   is gated behind a `.js` class on `<html>`, so content stays visible if JS fails.
 - **Scanlines and grid are hero-only.** They used to cover the whole page, which
   cost legibility on body copy. `crt` in the terminal toggles them.
-- **Print** collapses to an ink-friendly one-pager, diagrams included (`Cmd-P`).
+- **Print** collapses to an ink-friendly one-pager, diagrams included (`Cmd-P`),
+  and forces scroll-reveal content visible so nothing is lost printing from the top.
 - **Social preview:** regenerate `og-image.png` if the name or title changes, then
   re-scrape the URL in
   [LinkedIn's Post Inspector](https://www.linkedin.com/post-inspector/) to bust

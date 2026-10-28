@@ -92,37 +92,26 @@
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
     }
 
+    /* tmux status line, same as the hero terminal */
     .bar {
-      background: var(--bg3);
-      padding: 0.55rem 0.9rem;
       display: flex;
+      gap: 0.9ch;
+      padding: 0 0.6rem;
+      height: 22px;
       align-items: center;
-      gap: 0.45rem;
-      border-bottom: 1px solid var(--border);
+      background: var(--live-dim);
+      color: var(--bg);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .r {
-      background: #ff5f57;
-    }
-
-    .a {
-      background: #febc2e;
-    }
-
-    .g {
-      background: #28c840;
+    .bar b {
+      font-weight: 700;
     }
 
     .title {
       margin-left: auto;
-      font-size: 11px;
-      color: var(--text-dim);
     }
 
     .out {
@@ -224,13 +213,8 @@
 
 <body>
   <main class="term">
-    <div class="bar" aria-hidden="true">
-      <span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
-      <span class="title">caleb@portfolio: ~</span>
-    </div>
-
     <div class="out">
-      <p><span class="ps1" aria-hidden="true">$</span> <span id="attempt">open /</span></p>
+      <p><span class="ps1" aria-hidden="true">❯</span> <span id="attempt">open /</span></p>
       <p class="err">command not found</p>
 
       <h1 class="code">404</h1>
@@ -247,8 +231,13 @@
         <a href="/#contact">contact</a>
       </nav>
 
-      <p style="margin-top:1.2rem"><span class="ps1" aria-hidden="true">$</span> <span class="cursor"
+      <p style="margin-top:1.2rem"><span class="ps1" aria-hidden="true">❯</span> <span class="cursor"
           aria-hidden="true"></span></p>
+    </div>
+
+    <div class="bar" aria-hidden="true">
+      <b>[cg]</b><span>0:zsh*</span>
+      <span class="title">"caleb@pgh" exit 127</span>
     </div>
   </main>
 
